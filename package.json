@@ -1,12 +1,12 @@
 {
-  "name": "desktop-app-template",
-  "title": "Desktop App Template",
+  "name": "card-rush",
+  "title": "Card Rush",
   "version": "1.0.0",
-  "description": "A template for creating a cross-platform application using Electron JS using Vue JS to drive the UI and local development flow.",
+  "description": "Game development project for a persistent Deck Building adventure game.",
   "main": "main.js",
   "build": {
-    "appId": "net.mkv25.desktop-app-template",
-    "productName": "Desktop App Template",
+    "appId": "net.mkv25.card-rush",
+    "productName": "Card Rush",
     "copyright": "Copyright © 2022 mkv25.net",
     "directories": {
       "buildResources": "build"
@@ -23,7 +23,7 @@
     "lint": "standard --fix && mkvconf lint modpacks/**/*.conf --fix"
   },
   "keywords": [
-    "desktop app template"
+    "Card Rush"
   ],
   "author": "mkv25.net",
   "license": "UNLICENSED",

@@ -34,7 +34,7 @@ import newSaveFile from '@/models/saveFile'
 export default {
   data () {
     return {
-      filename: 'Ascension',
+      filename: 'Card Rush',
       formErrors: []
     }
   },

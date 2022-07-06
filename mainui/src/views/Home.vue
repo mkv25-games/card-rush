@@ -1,15 +1,15 @@
 <template>
   <div class="home cover-image">
     <div class="excerpt">
-      <h1>Desktop App Template</h1>
-      <p>The landing page of the application.</p>
-      <p>Welcome to this place in space and time.</p>
+      <h1>Card Rush</h1>
+      <p>Welcome to the Card Rush game.</p>
+      <p>In this place, in this space and time, conquest awaits.</p>
       <p>&nbsp;</p>
       <div v-if="$store.state.saveFileList.length > 0">
-        <router-link to="/full-page-section" draggable="false">Continue Adventure <icon icon="angle-double-right" /></router-link>
+        <router-link to="/full-page-section" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
       </div>
       <div v-else>
-        <router-link to="/full-page-section" draggable="false">Start Adventure</router-link>
+        <router-link to="/full-page-section" draggable="false">Begin A New Adventure</router-link>
       </div>
       <p>&nbsp;</p>
     </div>
@@ -49,14 +49,14 @@ h1 {
 }
 
 .excerpt a {
-  color: greenyellow;
+  color: gold;
   font-weight: 700;
   text-decoration: none;
-  border-left: 4px solid greenyellow;
-  border-right: 4px solid greenyellow;
+  border-left: 4px solid gold;
+  border-right: 4px solid gold;
   padding: 10px;
   border-radius: 10px;
-  background: rgba(34, 34, 34, 0.7);
+  background: rgba(140, 5, 5, 0.7);
   transition: background 250ms, border 1s, padding 200ms ease-in-out;
   user-select: none;
 }
