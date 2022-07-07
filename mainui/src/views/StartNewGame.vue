@@ -10,10 +10,10 @@
         <div class="form">
           <div class="form-row">
             <input v-model="filename" placeholder="Enter text" />
-            <button><icon icon="dice" /></button>
+            <button><icon icon="dice" v-on:click="pickRandomName" /></button>
           </div>
           <div v-if="formErrors.length" class="form-errors">
-            <h3>Form Errors</h3>
+            <h3>Can't create world</h3>
             <p class="form-error" v-for="message in formErrors" :key="message">{{ message }}</p>
           </div>
           <p class="actions">
@@ -50,10 +50,17 @@ export default {
     validateForm () {
       this.formErrors = []
       if (!this.filename) {
-        this.formErrors.push('No world name assigned')
+        this.formErrors.push('No world name chosen')
       }
 
       return this.formErrors.length === 0
+    },
+    pickRandomName () {
+      const world = this.$store.state.gamedata.World[0] || { names: ['Random World Names'] }
+      const worldNames = world.names.split(' ').map(n => n.trim())
+      const index1 = Math.floor(Math.random() * worldNames.length)
+      const index2 = Math.floor(Math.random() * worldNames.length)
+      this.filename = [worldNames[index1 % worldNames.length], worldNames[index2 % worldNames.length]].join(' ')
     },
     submitForm () {
       return this.validateForm() ? this.createNewGameFile(this) : false
