@@ -28,10 +28,10 @@
           </div>
         </template>
       </VerticalTileGrid>
-      <p>Information about available technologies:</p>
-      <VerticalTileGrid :tiles="technologies" :columns="1" :rows="4" :tileWidth="300">
+      <p>Locations:</p>
+      <VerticalTileGrid :tiles="locations" :columns="1" :rows="4" :tileWidth="300">
         <template v-slot="{ tile }">
-          <div class="icon-label">
+          <div class="icon-label" :style="{ background: tile.color }">
             <span><font-awesome-icon :icon="['fas', tile.icon || 'star']" /></span>
             <label>{{ tile.name }}</label>
           </div>
@@ -62,8 +62,8 @@ export default {
     characters () {
       return this.$store.state.gamedata.Character || []
     },
-    technologies () {
-      return this.$store.state.gamedata.Technology || []
+    locations () {
+      return this.$store.state.gamedata.Location || []
     }
   },
   methods: {

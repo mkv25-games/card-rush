@@ -6,7 +6,7 @@
     </g>
     <g>
       <tech-box v-for="tech in layout.children" :key="tech.id"
-        :class="tech.className"
+        :class="tech.className || 'tech'"
         :tech="tech" />
     </g>
   </svg>
@@ -58,7 +58,7 @@ export default {
     }
   },
   async mounted () {
-    await this.updateGraph()
+    // await this.updateGraph()
     const layout = await this.computeLayout()
     console.log('Technology Diagram Mounted:', layout)
     this.layout = layout
