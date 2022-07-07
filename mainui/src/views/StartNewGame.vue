@@ -1,30 +1,29 @@
 <template>
-  <div class="template">
-    <column-layout class="fixed-width-right overflow-hidden">
-      <template v-slot:left>
-        <pan-and-zoom class="darkmode">
-          <div style="color: white; background: grey; padding: 2em; width: 200px; height: 100px; font-size: 20px;">World map goes here?</div>
-        </pan-and-zoom>
-      </template>
-      <template v-slot:right>
-        <h2>New Game Setup</h2>
-        <p>What will this world be named?</p>
+  <div class="start-new-game">
+    <pan-and-zoom class="darkmode" :show-labels="true" :min-zoom="1" :max-zoom="1">
+      <div style="color: white; background: grey; padding: 2em; width: 200px; height: 100px; font-size: 20px;">World map goes here?</div>
+    </pan-and-zoom>
+    <div v-if="showDialog" class="dialog-lightbox">
+      <div class="dialog">
+        <h2>Create new world</h2>
+        <p>Name the world:</p>
         <div class="form">
           <div class="form-row">
-            <label>World Name:</label>
             <input v-model="filename" placeholder="Enter text" />
+            <button><icon icon="dice" /></button>
           </div>
           <div v-if="formErrors.length" class="form-errors">
             <h3>Form Errors</h3>
             <p class="form-error" v-for="message in formErrors" :key="message">{{ message }}</p>
           </div>
           <p class="actions">
-            <router-link to="/home">Cancel</router-link>
+            <router-link to="/">Cancel</router-link>
             <button v-on:click="submitForm">Create</button>
+            <button v-on:click="showDialog = false">Hide</button>
           </p>
         </div>
-      </template>
-    </column-layout>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -35,7 +34,8 @@ export default {
   data () {
     return {
       filename: 'Card Rush',
-      formErrors: []
+      formErrors: [],
+      showDialog: true
     }
   },
   computed: {
@@ -77,8 +77,27 @@ export default {
 </script>
 
 <style scoped>
-input {
-  padding: 8px;
+div.start-new-game {
+  position: relative;
+}
+div.dialog-lightbox {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+div.dialog {
+  top: 0;
+  left: 100px;
+  background: white;
+  padding: 4em;
+  border-radius: 2em;
+  border: 0.2em solid #ccc;
 }
 div.form {
   display: inline-block;
@@ -103,5 +122,27 @@ p.actions {
 p.actions > * {
   flex: 0 1;
   margin: 0.5em;
+}
+p.actions > button, p.actions > a, button, input {
+  border: 1px solid black;
+  border-radius: 0.4em;
+  color: black;
+  background: white;
+  margin: 0.2em;
+  padding: 0.4em 1.2em;
+  font-size: 0.9em;
+  text-decoration: none;
+  font-family: inherit;
+  cursor: default;
+}
+p.actions > button:hover, p.actions > a:hover, button:hover, input:focus {
+  background: rgb(248, 187, 102);
+}
+p.actions > button:active, p.actions > a:active, button:active {
+  background: rgb(218, 131, 32);
+}
+button > .icon {
+  font-size: 1.2em;
+  margin: -0.2em -0.5em;
 }
 </style>

@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="slot-controls" v-on:mouseover="clearCursor">
+    <div v-if="showControls" class="slot-controls" v-on:mouseover="clearCursor">
       <icon-button icon="chevron-circle-left" v-on:click="scrollLeft()" />
       <icon-button icon="chevron-circle-right" v-on:click="scrollRight()"  />
       <icon-button icon="chevron-circle-down" v-on:click="scrollDown()"  />
@@ -84,6 +84,10 @@ export default {
       default: true
     },
     showLabels: {
+      type: Boolean,
+      default: false
+    },
+    showControls: {
       type: Boolean,
       default: false
     },
@@ -233,7 +237,7 @@ export default {
       this.trackMoveOffset = true
       document.addEventListener('mouseup', this.endOffset)
     },
-    trackOffse (ev) {
+    trackOffset (ev) {
       const { x, y } = ev
       const { centerContent, trackMoveOffset, moveOffsetX, moveOffsetY, hw, hh } = this
       const { top, left } = this.$el.getBoundingClientRect()

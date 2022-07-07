@@ -14,7 +14,7 @@
       <p>You can load up, or delete save files from this list.</p>
     </div>
     <div v-else>
-      <p>No saveFiles found.</p>
+      <p>No worlds found.</p>
       <p>Consider: <router-link to="/start-new-game">Start New Game</router-link></p>
     </div>
     <p>
