@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link>
-    <router-link to="/full-page-section">Full Page Section</router-link>
-    <router-link to="/multi-page-section/section-1">Multi Page Section</router-link>
+    <router-link to="/full-page-section">Overview</router-link>
+    <router-link to="/multi-page-section/section-1">World</router-link>
     <router-link to="/settings/settings">Settings</router-link>
   </div>
 </template>

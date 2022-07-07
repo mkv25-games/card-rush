@@ -1,9 +1,9 @@
 <template>
   <div class="full-page-section">
-    <h1>Full Page Section</h1>
+    <h1>Game Overview</h1>
 
     <div class="column">
-      <h2>Left Column</h2>
+      <h2>World Management</h2>
       <p>Options for new and returning players:</p>
 
       <p>
@@ -18,7 +18,7 @@
 
     </div>
     <div class="column">
-      <h2>Right Column</h2>
+      <h2>Discoveries</h2>
       <p>Information about available characters:</p>
       <VerticalTileGrid :tiles="characters" :columns="1" :rows="4" :tileWidth="300">
         <template v-slot="{ tile }">
