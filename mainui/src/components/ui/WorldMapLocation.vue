@@ -1,7 +1,9 @@
 <template>
   <g :transform="`translate(${location.x} ${location.y})`">
-    <rect
-      :width="location.width" :height="location.height"
+    <circle
+      :r="location.width / 2"
+      :cx="location.width / 2"
+      :cy="location.height/ 2"
       :fill="location.color || 'gray'" />
     <text
       fill="black" stroke="none"

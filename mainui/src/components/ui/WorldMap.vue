@@ -21,6 +21,7 @@ const makeExampleGraph = () => {
     id: 'world-map',
     layoutOptions: {
       'elk.algorithm': 'layered',
+      desiredEdgeLength: 100,
       'spacing.nodeNodeBetweenLayers': 50,
       'elk.direction': 'DOWN'
     },
@@ -37,6 +38,7 @@ const makeExampleGraph = () => {
 }
 
 function removeEmptyEdges (edge) {
+  edge = edge || {}
   const hasTargets = edge.targets && edge.targets.length > 0
   const hasSources = edge.sources && edge.sources.length > 0
   return hasTargets && hasSources
@@ -89,20 +91,24 @@ export default {
       })
 
       const portalEdges = locations.map((loc, i) => {
-        const portalLoc = locations[(i + 3) % locations.length]
-        const edge = { id: `ex_${i}`, sources: [`c_${loc.id}`], targets: [`c_${portalLoc.id}`] }
-        return edge
+        if (i % 2 !== 0) {
+          const portalLoc = locations[(i + 4) % locations.length]
+          const edge = { id: `ex_${i}`, sources: [`c_${loc.id}`], targets: [`c_${portalLoc.id}`] }
+          return edge
+        }
       })
 
       const evenMoreEdges = locations.map((loc, i) => {
-        const portalLoc = locations[(i + 5) % locations.length]
-        const edge = { id: `ex_${i}`, sources: [`c_${loc.id}`], targets: [`c_${portalLoc.id}`] }
-        return edge
+        if (i % 3 === 0) {
+          const portalLoc = locations[(i + 6) % locations.length]
+          const edge = { id: `ex_${i}`, sources: [`c_${loc.id}`], targets: [`c_${portalLoc.id}`] }
+          return edge
+        }
       })
       // { id: 'e1', sources: ['n1'], targets: ['n2'] }
 
       this.graph.children = children
-      this.graph.edges = [].concat(edges, portalEdges, evenMoreEdges) || removeEmptyEdges(edges)
+      this.graph.edges = [].concat(edges, portalEdges, evenMoreEdges).filter(removeEmptyEdges)
     },
     async computeLayout () {
       let result = {}
