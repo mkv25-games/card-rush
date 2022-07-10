@@ -6,10 +6,10 @@
       <p>In this place, in this space and time, conquest awaits.</p>
       <p>&nbsp;</p>
       <div v-if="$store.state.saveFileList.length > 0">
-        <router-link to="/full-page-section" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
+        <router-link to="/overview" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
       </div>
       <div v-else>
-        <router-link to="/full-page-section" draggable="false">Begin A New Adventure</router-link>
+        <router-link to="/overview" draggable="false">Begin A New Adventure</router-link>
       </div>
       <p>&nbsp;</p>
     </div>

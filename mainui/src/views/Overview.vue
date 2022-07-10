@@ -1,5 +1,5 @@
 <template>
-  <div class="full-page-section">
+  <div class="overview">
     <h1>Game Overview</h1>
 
     <div class="column">
@@ -69,7 +69,7 @@ export default {
   methods: {
     async reloadLastSave (saveFile) {
       await this.$store.dispatch('loadGameRecord', saveFile)
-      this.$router.push({ path: '/multi-page-section/section-1' })
+      this.$router.push({ path: '/world/map' })
     }
   },
   components: { VerticalTileGrid }

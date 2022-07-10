@@ -18,7 +18,7 @@
       <p>Consider: <router-link to="/start-new-game">Start New Game</router-link></p>
     </div>
     <p>
-      <router-link to="/full-page-section">&lt; Back</router-link>
+      <router-link to="/overview">&lt; Back</router-link>
     </p>
     <div v-if="errors.length > 0" class="errors">
       <h2>Errors</h2>
@@ -51,7 +51,7 @@ export default {
     async loadGameRecord (savefile) {
       try {
         await this.$store.dispatch('loadGameRecord', savefile)
-        this.$router.push({ path: '/full-page-section' })
+        this.$router.push({ path: '/overview' })
       } catch (ex) {
         this.errors.push(`Unable to load savefile ${savefile.filepath}.`)
       }

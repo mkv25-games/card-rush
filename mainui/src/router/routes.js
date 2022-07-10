@@ -1,7 +1,7 @@
 /* Generated file: node data-scripts/find-all-routes.js */
 
-import FullPageSection from '../views/FullPageSection.vue'
 import Home from '../views/Home.vue'
+import Overview from '../views/Overview.vue'
 import SaveFileManagement from '../views/SaveFileManagement.vue'
 import ComponentTests from '../views/settings/debug/ComponentTests.vue'
 import Debug from '../views/settings/debug/Debug.vue'
@@ -13,19 +13,20 @@ import StartNewGame from '../views/StartNewGame.vue'
 import Template from '../views/Template.vue'
 import CharacterStats from '../views/world/CharacterStats.vue'
 import EventHistory from '../views/world/EventHistory.vue'
+import Map from '../views/world/Map.vue'
 import MultiPageSectionView from '../views/world/MultiPageSectionView.vue'
 import SkillsTree from '../views/world/SkillsTree.vue'
 
 const routes = [
   {
-    path: '/full-page-section',
-    name: 'Full Page Section',
-    component: FullPageSection
-  },
-  {
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/overview',
+    name: 'Overview',
+    component: Overview
   },
   {
     path: '/save-file-management',
@@ -81,6 +82,11 @@ const routes = [
     path: '/world/event-history',
     name: 'Event History',
     component: EventHistory
+  },
+  {
+    path: '/world/map',
+    name: 'Map',
+    component: Map
   },
   {
     path: '/world/multi-page-section-view',

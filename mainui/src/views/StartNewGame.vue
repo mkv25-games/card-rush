@@ -72,7 +72,7 @@ export default {
         saveFile = newSaveFile({ name: data.filename })
         await this.$store.dispatch('saveGameRecord', saveFile)
         await this.$store.dispatch('loadGameRecord', saveFile)
-        this.$router.push({ path: '/full-page-section' })
+        this.$router.push({ path: '/overview' })
       } catch (ex) {
         this.formErrors.push('Unable to create save file:', ex.message, saveFile)
         console.log('[StartNewGame.vue]', ex, 'Save File:', saveFile)
