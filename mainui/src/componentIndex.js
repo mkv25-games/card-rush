@@ -21,11 +21,6 @@ import Toggle from './components/ui/Toggle.vue'
 import VerticalTileGrid from './components/ui/VerticalTileGrid.vue'
 import FullPageSection from './views/FullPageSection.vue'
 import Home from './views/Home.vue'
-import MultiPageSectionView from './views/multi-page-section/MultiPageSectionView.vue'
-import Section1 from './views/multi-page-section/Section1.vue'
-import Section2 from './views/multi-page-section/Section2.vue'
-import Section3 from './views/multi-page-section/Section3.vue'
-import MultiPageSectionNav from './views/multi-page-section/ui/MultiPageSectionNav.vue'
 import SaveFileManagement from './views/SaveFileManagement.vue'
 import ComponentTests from './views/settings/debug/ComponentTests.vue'
 import Debug from './views/settings/debug/Debug.vue'
@@ -36,7 +31,12 @@ import Settings from './views/settings/Settings.vue'
 import SettingsNav from './views/settings/ui/SettingsNav.vue'
 import StartNewGame from './views/StartNewGame.vue'
 import Template from './views/Template.vue'
+import CharacterStats from './views/world/CharacterStats.vue'
+import EventHistory from './views/world/EventHistory.vue'
+import MultiPageSectionView from './views/world/MultiPageSectionView.vue'
+import SkillsTree from './views/world/SkillsTree.vue'
+import MultiPageSectionNav from './views/world/ui/MultiPageSectionNav.vue'
 
 export default {
-  PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, FullPageSection, Home, MultiPageSectionView, Section1, Section2, Section3, MultiPageSectionNav, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template
+  PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, FullPageSection, Home, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, MultiPageSectionView, SkillsTree, MultiPageSectionNav
 }

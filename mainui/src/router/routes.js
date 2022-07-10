@@ -2,10 +2,6 @@
 
 import FullPageSection from '../views/FullPageSection.vue'
 import Home from '../views/Home.vue'
-import MultiPageSectionView from '../views/multi-page-section/MultiPageSectionView.vue'
-import Section1 from '../views/multi-page-section/Section1.vue'
-import Section2 from '../views/multi-page-section/Section2.vue'
-import Section3 from '../views/multi-page-section/Section3.vue'
 import SaveFileManagement from '../views/SaveFileManagement.vue'
 import ComponentTests from '../views/settings/debug/ComponentTests.vue'
 import Debug from '../views/settings/debug/Debug.vue'
@@ -15,6 +11,10 @@ import Mods from '../views/settings/Mods.vue'
 import Settings from '../views/settings/Settings.vue'
 import StartNewGame from '../views/StartNewGame.vue'
 import Template from '../views/Template.vue'
+import CharacterStats from '../views/world/CharacterStats.vue'
+import EventHistory from '../views/world/EventHistory.vue'
+import MultiPageSectionView from '../views/world/MultiPageSectionView.vue'
+import SkillsTree from '../views/world/SkillsTree.vue'
 
 const routes = [
   {
@@ -26,26 +26,6 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home
-  },
-  {
-    path: '/multi-page-section/multi-page-section-view',
-    name: 'Multi Page Section View',
-    component: MultiPageSectionView
-  },
-  {
-    path: '/multi-page-section/section-1',
-    name: 'Section 1',
-    component: Section1
-  },
-  {
-    path: '/multi-page-section/section-2',
-    name: 'Section 2',
-    component: Section2
-  },
-  {
-    path: '/multi-page-section/section-3',
-    name: 'Section 3',
-    component: Section3
   },
   {
     path: '/save-file-management',
@@ -91,6 +71,26 @@ const routes = [
     path: '/template',
     name: 'Template',
     component: Template
+  },
+  {
+    path: '/world/character-stats',
+    name: 'Character Stats',
+    component: CharacterStats
+  },
+  {
+    path: '/world/event-history',
+    name: 'Event History',
+    component: EventHistory
+  },
+  {
+    path: '/world/multi-page-section-view',
+    name: 'Multi Page Section View',
+    component: MultiPageSectionView
+  },
+  {
+    path: '/world/skills-tree',
+    name: 'Skills Tree',
+    component: SkillsTree
   }
 ]
 
