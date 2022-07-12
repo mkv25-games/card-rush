@@ -11,7 +11,7 @@
 export default {
   computed: {
     saveFile () {
-      return this.$store.state.saveFile || false
+      return this.$store.state.saveFile || {}
     }
   }
 }
