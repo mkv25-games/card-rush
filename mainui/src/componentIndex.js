@@ -10,6 +10,7 @@ import GridFill from './components/ui/GridFill.vue'
 import HorizontalTileGrid from './components/ui/HorizontalTileGrid.vue'
 import Icon from './components/ui/Icon.vue'
 import IconButton from './components/ui/IconButton.vue'
+import Lightbox from './components/ui/Lightbox.vue'
 import PanAndZoom from './components/ui/PanAndZoom.vue'
 import Property from './components/ui/Property.vue'
 import PropertyPanel from './components/ui/PropertyPanel.vue'
@@ -41,5 +42,5 @@ import SkillsTree from './views/world/SkillsTree.vue'
 import MultiPageSectionNav from './views/world/ui/MultiPageSectionNav.vue'
 
 export default {
-  PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
+  PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, Lightbox, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
 }
