@@ -1,5 +1,6 @@
 /* Generated file: node data-scripts/find-all-components.js */
 
+import CharacterCard from './components/cards/CharacterCard.vue'
 import PrimaryNav from './components/PrimaryNav.vue'
 import SidebarNav from './components/SidebarNav.vue'
 import StoryTeller from './components/toys/StoryTeller.vue'
@@ -42,5 +43,5 @@ import SkillsTree from './views/world/SkillsTree.vue'
 import MultiPageSectionNav from './views/world/ui/MultiPageSectionNav.vue'
 
 export default {
-  PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, Lightbox, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
+  CharacterCard, PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, Lightbox, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
 }

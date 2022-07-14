@@ -11,9 +11,7 @@
         <h3>{{ cc.name }}</h3>
         <tabulation :items=[cc] />
         <div class="cards">
-          <div v-for="(card, idx) in characterCardList(cc)" :key="`c_${card.id}_${idx}`" class="card" :style="{ outlineColor: cc.color }">
-            <label>{{ card.name || card.id }}</label>
-          </div>
+          <character-card v-for="(cardId, idx) in characterCardList(cc)" :key="`c_${cardId}_${idx}`" :cardId="cardId" :baseColor="cc.color" :baseIcon="cc.icon" />
         </div>
       </div>
     </div>
@@ -41,9 +39,7 @@ export default {
       } catch (ex) {
         // No starting cards found?
       }
-      return list.map(c => {
-        return { id: c }
-      })
+      return list
     }
   }
 }
@@ -54,16 +50,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5em;
-  height: 8em;
-  background: white;
-  margin: 1em;
-  outline-width: 0.5em;
-  outline-style: solid;
 }
 </style>

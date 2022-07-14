@@ -130,7 +130,7 @@ function setup () {
     modules: {}
   })
 
-  main.getGamedataIndex = (type, property) => {
+  main.getGamedataIndex = (type, property = 'id') => {
     const { gamedata } = main.state
     const dataset = gamedata[type] || []
     const index = dataset.reduce((acc, item) => {
