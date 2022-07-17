@@ -1,5 +1,5 @@
 <template>
-  <svg v-if="layout" :width="layout.width" :height="layout.height">
+  <svg v-if="layout" :viewBox="viewBox">
     <g :transform="`translate(${layout.width / 2} ${layout.height / 2})`">
       <world-map-location v-for="location in layout.locations" :key="location.id"
         :class="location.className || 'location'"
@@ -9,38 +9,12 @@
 </template>
 
 <script>
-import { Hex, Layout, Point } from '../../utils/hex.js'
 import { generateSeedFrom } from '../../utils/seeds.js'
+import { Hex } from '../../utils/hex.js'
+import { calculateHexagonSpiral, createScreenLayout } from '../../utils/hexLayout.js'
+
 const tileSize = 120
-
-const screenLayout = new Layout(Layout.pointy, new Point(tileSize / 2, tileSize / 2), new Point(0, 0))
-
-function createHexagonRing (center, radius) {
-  const hexes = []
-  let hex = center.add(center.neighbor(4).scale(radius))
-  for (let i = 0; i < 6; i++) {
-    for (let j = 0; j < radius; j++) {
-      hexes.push(hex)
-      hex = hex.neighbor(i)
-    }
-  }
-
-  return hexes
-}
-
-function createHexagonLayout ({ radius, generatorFn }) {
-  const center = new Hex(0, 0, 0)
-  const rings = [center]
-  for (let k = 1; k < radius; k++) {
-    const ring = createHexagonRing(center, k)
-    rings.push(ring)
-  }
-
-  const hexes = rings.flat(1)
-  console.log('Spiral Hexes:', hexes)
-
-  return hexes.map((hex, index) => generatorFn({ hex, index }))
-}
+const screenLayout = createScreenLayout(tileSize)
 
 export default {
   data () {
@@ -61,6 +35,10 @@ export default {
     },
     world () {
       return this.saveFile.world || {}
+    },
+    viewBox () {
+      const { layout } = this
+      return [0, 0, layout.width, layout.height].join(' ')
     }
   },
   async mounted () {
@@ -74,8 +52,10 @@ export default {
   },
   methods: {
     createLayout () {
+      const { createNewLocation } = this
       const radius = this.world.size || 4
-      const locations = this.world.locations || createHexagonLayout({ radius, generatorFn: this.createNewLocation })
+      const center = new Hex(0, 0, 0)
+      const locations = this.world.locations || calculateHexagonSpiral(center, radius).map((hex, index) => createNewLocation({ hex, index }))
 
       const top = Math.min(...locations.map(loc => loc.y))
       const left = Math.min(...locations.map(loc => loc.x))

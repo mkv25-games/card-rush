@@ -4,7 +4,7 @@ function createDefault () {
   const world = {
     id: 'no-world',
     name: 'No World',
-    size: 8
+    size: 3
   }
   return {
     lastUpdated,
