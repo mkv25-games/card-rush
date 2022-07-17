@@ -32,11 +32,6 @@ export default {
       const date = new Date(this.saveFile.lastUpdated)
       return date.toISOString().slice(0, 19).replace('T', ' ')
     }
-  },
-  methods: {
-    showQuadrantInfo (quadrant) {
-      this.highlightedQuadrant = quadrant
-    }
   }
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
   <g :transform="`translate(${location.x} ${location.y})`">
     <circle
-      :r="location.width / 2"
-      :cx="location.width / 2"
-      :cy="location.height/ 2"
+      :r="hw"
+      :cx="hw"
+      :cy="hh"
       :fill="location.color || 'gray'" />
     <text
       fill="black" stroke="none"
@@ -12,7 +12,7 @@
       font-size="15"
       text-anchor="middle">
     </text>
-    <foreignObject class="node" x="0" y="0" :width="location.width" :height="location.height">
+    <foreignObject class="node" x="0" y="0" :width="width" :height="height">
       <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
         <div>
           <Icon :icon="findIcon(location)" />
@@ -40,14 +40,21 @@ export default {
     }
   },
   computed: {
+    width () {
+      return this.location.width || 100
+    },
+    height () {
+      return this.location.height || 100
+    },
     hw () {
-      return (this.location.width || 0) / 2
+      return this.width / 2
     },
     hh () {
-      return (this.location.height || 0) / 2
+      return this.height / 2
     },
     labelLines () {
-      return this.location.label.split(' ')
+      const label = this.location.label || 'No label'
+      return label.split(' ')
     }
   }
 }
