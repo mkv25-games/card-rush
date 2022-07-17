@@ -8,7 +8,7 @@
       <div class="form">
         <div class="form-row">
           <input v-model="filename" placeholder="Enter text" />
-          <button><icon icon="dice" v-on:click="pickRandomName" /></button>
+          <button v-on:click="pickRandomName"><icon icon="dice" /></button>
         </div>
         <div class="form-row">
           <button v-for="world in worlds" :key="world.id" :class="selectedWorldClass(world)" v-on:click="selectedWorld = world">{{ world.name }}</button>
@@ -64,6 +64,7 @@ export default {
     }
   },
   mounted () {
+    this.pickRandomName()
     this.selectedWorld = this.worlds.filter(n => n.default)[0] || this.worlds[0] || { size: 0 }
   },
   methods: {
