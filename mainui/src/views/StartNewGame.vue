@@ -1,12 +1,11 @@
 <template>
   <div class="start-new-game">
     <pan-and-zoom class="darkmode" :show-labels="true" :min-zoom="1" :max-zoom="1">
-      <div style="color: white; background: grey; padding: 2em; width: 200px; height: 100px; font-size: 20px;">World map goes here?</div>
+      <world-map :world="previewWorld" class="preview-world"></world-map>
     </pan-and-zoom>
     <lightbox v-if="showDialog">
-      <h2>Create new world</h2>
-      <p>Name the world:</p>
-      <div class="form">
+        <h2>Create new world</h2>
+        <div class="form">
         <div class="form-row">
           <input v-model="filename" placeholder="Enter text" />
           <button><icon icon="dice" v-on:click="pickRandomName" /></button>
@@ -14,7 +13,7 @@
         <div class="form-row">
           <button v-for="world in worlds" :key="world.id" :class="selectedWorldClass(world)" v-on:click="selectedWorld = world">{{ world.name }}</button>
         </div>
-        <p>Size: {{ selectedWorld.size }}</p>
+        <world-map :world="previewWorld" class="preview-world"></world-map>
         <div v-if="formErrors.length" class="form-errors">
           <h3>Can't create world</h3>
           <p class="form-error" v-for="message in formErrors" :key="message">{{ message }}</p>
@@ -53,6 +52,12 @@ export default {
       return worlds.sort((a, b) => {
         return a.size < b.size ? -1 : 1
       })
+    },
+    previewWorld () {
+      const previewName = this.filename
+      const world = clone(this.selectedWorld)
+      world.name = previewName
+      return world
     }
   },
   mounted () {
@@ -85,15 +90,15 @@ export default {
       this.filename = [worldNames[index1 % worldNames.length], worldNames[index2 % worldNames.length]].join(' ')
     },
     submitForm () {
-      return this.validateForm() ? this.createNewGameFile(this) : false
+      return this.validateForm() ? this.createNewGameFile(this.previewWorld) : false
     },
-    async createNewGameFile (data) {
-      console.log('Creating new game file:', data.filename)
+    async createNewGameFile (previewWorld) {
+      console.log('Creating new game file:', previewWorld.name)
       let saveFile
       try {
         saveFile = newSaveFile({
-          name: data.filename,
-          world: clone(this.selectedWorld)
+          name: previewWorld.name,
+          world: previewWorld
         })
         await this.$store.dispatch('saveGameRecord', saveFile)
         await this.$store.dispatch('loadGameRecord', saveFile)
@@ -157,5 +162,9 @@ p.actions > button:active, p.actions > a:active, button:active {
 button > .icon {
   font-size: 1.2em;
   margin: -0.2em -0.5em;
+}
+.preview-world {
+  max-height: 50vh;
+  margin: 1em;
 }
 </style>

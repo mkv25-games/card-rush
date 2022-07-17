@@ -3,7 +3,7 @@
     <h1><icon icon="map-marked-alt" /> World Map</h1>
     <p>Map of {{ saveFile.name }}</p>
     <tabulation :items="[saveFile.world || {}]" />
-    <world-map class="full-world-map"></world-map>
+    <world-map :world="world"></world-map>
   </multi-page-section-view>
 </template>
 
@@ -12,6 +12,9 @@ export default {
   computed: {
     saveFile () {
       return this.$store.state.saveFile || {}
+    },
+    world () {
+      return this.saveFile.world || { name: 'Unknown World' }
     }
   }
 }
