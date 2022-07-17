@@ -1,6 +1,6 @@
 <template>
   <svg v-if="layout" :width="layout.width" :height="layout.height">
-    <g>
+    <g :transform="`translate(${layout.width / 2} ${layout.height / 2})`">
       <world-map-location v-for="location in layout.locations" :key="location.id"
         :class="location.className || 'location'"
         :location="location" />
@@ -9,6 +9,39 @@
 </template>
 
 <script>
+import { Hex, Layout, Point } from '../../utils/hex.js'
+import { generateSeedFrom } from '../../utils/seeds.js'
+const tileSize = 120
+
+const screenLayout = new Layout(Layout.pointy, new Point(tileSize / 2, tileSize / 2), new Point(0, 0))
+
+function createHexagonRing (center, radius) {
+  const hexes = []
+  let hex = center.add(center.neighbor(4).scale(radius))
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < radius; j++) {
+      hexes.push(hex)
+      hex = hex.neighbor(i)
+    }
+  }
+
+  return hexes
+}
+
+function createHexagonLayout ({ radius, generatorFn }) {
+  const center = new Hex(0, 0, 0)
+  const rings = [center]
+  for (let k = 1; k < radius; k++) {
+    const ring = createHexagonRing(center, k)
+    rings.push(ring)
+  }
+
+  const hexes = rings.flat(1)
+  console.log('Spiral Hexes:', hexes)
+
+  return hexes.map((hex, index) => generatorFn({ hex, index }))
+}
+
 export default {
   data () {
     return {
@@ -31,37 +64,52 @@ export default {
     }
   },
   async mounted () {
-    await this.updateMap()
+    await Promise.all([
+      this.$store.dispatch('refreshSaveFileList'),
+      this.$store.dispatch('loadModpacks')
+    ])
     const layout = await this.createLayout()
     console.log('World Map mounted:', layout)
     this.layout = layout
   },
   methods: {
     createLayout () {
-      const types = this.locationTypes
-      const type = types[0] || { id: 'unknown', name: 'Unknown', icon: 'mountain', color: '#999' }
-      const locations = this.world.locations || [{
-        x: 0,
-        y: 0,
-        label: type.name,
-        type,
-        className: type.id,
-        data: type
-      }]
+      const radius = this.world.size || 4
+      const locations = this.world.locations || createHexagonLayout({ radius, generatorFn: this.createNewLocation })
 
-      locations.forEach(loc => {
-        loc.id = ['l', loc.x, loc.y].join('_')
-      })
+      const top = Math.min(...locations.map(loc => loc.y))
+      const left = Math.min(...locations.map(loc => loc.x))
+      const right = Math.max(...locations.map(loc => loc.x))
+      const bottom = Math.max(...locations.map(loc => loc.y))
+
+      console.log('Locations!', locations, { top, left, right, bottom })
 
       this.layout.locations = locations
       return {
         locations,
-        width: 100,
-        height: 100
+        width: Math.abs(right - left) + (tileSize * 2),
+        height: Math.abs(bottom - top) + (tileSize * 2)
       }
     },
-    updateMap () {
-
+    createNewLocation ({ hex, index }) {
+      const world = this.world
+      const types = this.locationTypes
+      const { x, y } = screenLayout.hexToPixel(hex)
+      const worldSeed = generateSeedFrom(world.name || 'unknown')
+      const typeSeed = worldSeed + index
+      const type = types[typeSeed % types.length] || { id: 'unknown', name: 'Unknown', icon: 'mountain', color: '#999' }
+      const location = {
+        hex,
+        x,
+        y,
+        width: tileSize,
+        height: tileSize,
+        label: type.name,
+        color: type.color,
+        data: type,
+        id: ['l', x, y].join('_')
+      }
+      return location
     }
   }
 }

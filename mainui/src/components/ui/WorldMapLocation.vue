@@ -1,10 +1,10 @@
 <template>
-  <g :transform="`translate(${location.x} ${location.y})`">
+  <g :transform="`translate(${location.x - hw} ${location.y - hh})`">
     <circle
-      :r="hw"
+      :r="hexRadius"
       :cx="hw"
       :cy="hh"
-      :fill="location.color || 'gray'" />
+      :fill="color" />
     <text
       fill="black" stroke="none"
       font-family="Avenir, Helvetica, Arial, sans-serif"
@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     findIcon (location) {
-      const { data } = location
-      return data ? data.icon || 'seedling' : location.icon || 'seedling'
+      const data = location.data || {}
+      return data.icon || location.icon || 'seedling'
     }
   },
   computed: {
@@ -46,6 +46,9 @@ export default {
     height () {
       return this.location.height || 100
     },
+    hexRadius () {
+      return this.width * 0.4
+    },
     hw () {
       return this.width / 2
     },
@@ -54,7 +57,15 @@ export default {
     },
     labelLines () {
       const label = this.location.label || 'No label'
+      const { hex } = this.location
+      const showHexLabel = false
+      if (hex && showHexLabel) {
+        return [[hex.q, hex.r, hex.s].join(', ')]
+      }
       return label.split(' ')
+    },
+    color () {
+      return this.location.color || 'grey'
     }
   }
 }
