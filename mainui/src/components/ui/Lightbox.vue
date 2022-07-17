@@ -1,10 +1,8 @@
 <template>
   <div class="dialog-lightbox">
-    <collapsed>
-      <div class="dialog">
-        <slot>Popup Dialog</slot>
-      </div>
-    </collapsed>
+    <div class="dialog">
+      <slot>Popup Dialog</slot>
+    </div>
   </div>
 </template>
 

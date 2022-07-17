@@ -1,11 +1,11 @@
 <template>
   <div class="start-new-game">
-    <pan-and-zoom class="darkmode" :show-labels="true" :min-zoom="1" :max-zoom="1">
-      <world-map :world="previewWorld" class="preview-world"></world-map>
+    <pan-and-zoom class="darkmode" :show-labels="false" :min-zoom="1" :max-zoom="1">
+      <world-map :world="previewWorld" :show-icons="previewWorld.size < 10" class="preview-world"></world-map>
     </pan-and-zoom>
     <lightbox v-if="showDialog">
-        <h2>Create new world</h2>
-        <div class="form">
+      <h2>Create new world</h2>
+      <div class="form">
         <div class="form-row">
           <input v-model="filename" placeholder="Enter text" />
           <button><icon icon="dice" v-on:click="pickRandomName" /></button>
@@ -13,17 +13,20 @@
         <div class="form-row">
           <button v-for="world in worlds" :key="world.id" :class="selectedWorldClass(world)" v-on:click="selectedWorld = world">{{ world.name }}</button>
         </div>
-        <world-map :world="previewWorld" class="preview-world"></world-map>
         <div v-if="formErrors.length" class="form-errors">
           <h3>Can't create world</h3>
           <p class="form-error" v-for="message in formErrors" :key="message">{{ message }}</p>
         </div>
         <p class="actions">
-          <router-link to="/">Cancel</router-link>
-          <button v-on:click="submitForm">Create</button>
+          <router-link to="/"><icon icon="window-close" /><label>Cancel</label></router-link>
+          <button v-on:click="submitForm"><icon icon="pen" /><label>Create</label></button>
+          <button v-on:click="showDialog = false"><icon icon="map-marked-alt" /><label>Preview</label></button>
         </p>
       </div>
     </lightbox>
+    <p v-else class="actions show-dialog-button">
+      <button v-on:click="showDialog = true"><icon icon="map-marked-alt" /><label>Hide</label></button>
+    </p>
   </div>
 </template>
 
@@ -166,5 +169,13 @@ button > .icon {
 .preview-world {
   max-height: 50vh;
   margin: 1em;
+  min-height: 200vh;
+  min-width: 200vw;
+  font-size: 16px;
+}
+.show-dialog-button {
+  position: absolute;
+  top: 1em;
+  right: 1em;
 }
 </style>

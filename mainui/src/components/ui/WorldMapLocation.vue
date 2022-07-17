@@ -15,7 +15,7 @@
     <foreignObject class="node" x="0" y="0" :width="width" :height="height">
       <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
         <div>
-          <Icon :icon="findIcon(location)" />
+          <icon v-if="showIcon" :icon="findIcon(location)" />
           <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
         </div>
       </body>
@@ -31,6 +31,10 @@ export default {
       default () {
         return { label: 'No label' }
       }
+    },
+    showIcon: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

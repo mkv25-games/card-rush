@@ -2,6 +2,7 @@
   <svg v-if="layout" :viewBox="viewBox">
     <g :transform="`translate(${layout.width / 2} ${layout.height / 2})`">
       <world-map-location v-for="location in layout.locations" :key="location.id"
+        :show-icon="showIcons"
         :class="location.className || 'location'"
         :location="location" />
     </g>
@@ -42,6 +43,10 @@ export default {
       default () {
         return {}
       }
+    },
+    showIcons: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
