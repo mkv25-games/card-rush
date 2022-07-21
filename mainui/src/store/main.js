@@ -116,15 +116,17 @@ function setup () {
         await dispatch('saveUserPreferences')
         await dispatch('combineModpacks')
       },
-      async hideDeveloperTools ({ commit }, state) {
+      async hideDeveloperTools ({ commit, state }) {
         commit('hideDeveloperTools')
         const rpcProxy = await rpc.fetch()
-        return rpcProxy.updateDeveloperTools(state.userPreferences.developerTools.visible)
+        const { developerTools } = state.userPreferences
+        return rpcProxy.updateDeveloperTools(developerTools.visible)
       },
       async showDeveloperTools ({ commit, state }) {
         commit('showDeveloperTools')
         const rpcProxy = await rpc.fetch()
-        return rpcProxy.updateDeveloperTools(state.userPreferences.developerTools.visible)
+        const { developerTools } = state.userPreferences
+        return rpcProxy.updateDeveloperTools(developerTools.visible)
       }
     },
     modules: {}

@@ -6,15 +6,19 @@
       <h2>World Management</h2>
       <p>Options for new and returning players:</p>
 
-      <p>
-        <a v-if="lastSaveFile" v-on:click="reloadLastSave(lastSaveFile)">Continue <b>{{ lastSaveFile.name }}</b></a>
-        <span v-else class="disabled-link">[ No Recent Save File Found ]</span>
-      </p>
-      <p><router-link to="/start-new-game">Start New Game</router-link></p>
-      <p>
-        <router-link v-if="saveFileList.length > 0" to="/save-file-management">Manage Save Files</router-link>
-        <span v-else class="disabled-link">[ Manage Save Files ]</span>
-      </p>
+      <column>
+        <grow-button>
+          <a v-if="lastSaveFile" v-on:click="reloadLastSave(lastSaveFile)">Continue <b>{{ lastSaveFile.name }}</b></a>
+          <span v-else class="disabled-link">[ No Recent Save File Found ]</span>
+        </grow-button>
+        <grow-button>
+          <router-link to="/start-new-game">Start New Game</router-link>
+        </grow-button>
+        <grow-button>
+          <router-link v-if="saveFileList.length > 0" to="/save-file-management">Manage Save Files</router-link>
+          <span v-else class="disabled-link">[ Manage Save Files ]</span>
+        </grow-button>
+      </column>
 
     </div>
     <div class="column">

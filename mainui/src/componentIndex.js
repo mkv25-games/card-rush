@@ -6,8 +6,10 @@ import SidebarNav from './components/SidebarNav.vue'
 import StoryTeller from './components/toys/StoryTeller.vue'
 import Checkmark from './components/ui/Checkmark.vue'
 import Collapsed from './components/ui/Collapsed.vue'
+import Column from './components/ui/Column.vue'
 import ColumnLayout from './components/ui/ColumnLayout.vue'
 import GridFill from './components/ui/GridFill.vue'
+import GrowButton from './components/ui/GrowButton.vue'
 import HorizontalTileGrid from './components/ui/HorizontalTileGrid.vue'
 import Icon from './components/ui/Icon.vue'
 import IconButton from './components/ui/IconButton.vue'
@@ -43,5 +45,5 @@ import SkillsTree from './views/world/SkillsTree.vue'
 import MultiPageSectionNav from './views/world/ui/MultiPageSectionNav.vue'
 
 export default {
-  CharacterCard, PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, ColumnLayout, GridFill, HorizontalTileGrid, Icon, IconButton, Lightbox, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
+  CharacterCard, PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, Column, ColumnLayout, GridFill, GrowButton, HorizontalTileGrid, Icon, IconButton, Lightbox, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, Overview, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
 }

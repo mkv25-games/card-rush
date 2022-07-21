@@ -6,10 +6,14 @@
       <p>In this place, in this space and time, conquest awaits.</p>
       <p>&nbsp;</p>
       <div v-if="$store.state.saveFileList.length > 0">
-        <router-link to="/overview" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
+        <grow-button>
+          <router-link to="/overview" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
+        </grow-button>
       </div>
       <div v-else>
-        <router-link to="/overview" draggable="false">Begin A New Adventure</router-link>
+        <grow-button>
+          <router-link to="/overview" draggable="false">Begin A New Adventure</router-link>
+        </grow-button>
       </div>
       <p>&nbsp;</p>
     </div>
@@ -46,32 +50,6 @@ h1 {
   background: rgba(224, 224, 224, 0.7);
   color: black;
   font-weight: 500;
-}
-
-.excerpt a {
-  color: gold;
-  font-weight: 700;
-  text-decoration: none;
-  border-left: 4px solid gold;
-  border-right: 4px solid gold;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(140, 5, 5, 0.7);
-  transition: background 250ms, border 1s, padding 200ms ease-in-out;
-  user-select: none;
-}
-.excerpt a:hover {
-  color: lightskyblue;
-  border-left: 4px solid lightpink;
-  border-right: 4px solid lightpink;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 10px 40px;
-}
-.excerpt a:active {
-  color: white;
-  border-color: white;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 10px;
 }
 
 .cover-image {

@@ -4,15 +4,19 @@
     <div class="frame">
       <slot>
         <h1>Interface Settings</h1>
-        <p>Build Information: {{ $store.state.version }}</p>
-        <p>Stored count: {{ $store.state.userPreferences.count }}</p>
+        <tabulation :items="[{
+          'Build Information': $store.state.version,
+          'Stored count': $store.state.userPreferences.count
+        }]" />
         <h2>Interactions</h2>
-        <p>
-          <button v-on:click="$store.dispatch('increment')">Increment</button>
-        </p>
-        <p>
-          <button v-on:click="$store.dispatch('resetUserPreferences')">Reset User Preferences</button>
-        </p>
+        <column>
+          <grow-button v-on:click="$store.dispatch('increment')">
+            <a>Increment</a>
+          </grow-button>
+          <grow-button v-on:click="$store.dispatch('resetUserPreferences')">
+            <a>Reset User Preferences</a>
+          </grow-button>
+        </column>
         <h2>Stored Preferences</h2>
         <tabulation :items="[$store.state.userPreferences]" />
       </slot>
