@@ -1,6 +1,6 @@
 <template>
   <div class="save-file-management">
-    <h1>Local Save Files</h1>
+    <h1>Manage Save Files</h1>
     <p v-if="loading">Loading Save Data...</p>
     <div v-else-if="saveFiles.length">
       <p>Save files are ordered by save date</p>
@@ -8,18 +8,20 @@
         <li v-for="saveFile in saveFiles" :key="saveFile.filepath">
           <div class="name-label" v-on:click="loadGameRecord(saveFile)">{{ saveFile.name }}</div>
           <div class="date-label">{{ formatDate(saveFile.fileinfo.mtime) }}</div>
-          <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)">[delete]</div>
+          <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)"><icon icon="window-close" /></div>
         </li>
       </ul>
       <p>You can load up, or delete save files from this list.</p>
     </div>
     <div v-else>
       <p>No worlds found.</p>
-      <p>Consider: <router-link to="/start-new-game">Start New Game</router-link></p>
+      <grow-button>
+        <router-link to="/start-new-game">Start New Game</router-link>
+      </grow-button>
     </div>
-    <p>
+    <grow-button>
       <router-link to="/overview">&lt; Back</router-link>
-    </p>
+    </grow-button>
     <div v-if="errors.length > 0" class="errors">
       <h2>Errors</h2>
       <p v-for="error in errors" :key="error">{{ error }}</p>
