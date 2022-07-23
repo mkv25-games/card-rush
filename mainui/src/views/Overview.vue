@@ -7,16 +7,22 @@
       <p>Options for new and returning players:</p>
 
       <column>
-        <grow-button>
-          <a v-if="lastSaveFile" v-on:click="reloadLastSave(lastSaveFile)">Continue <b>{{ lastSaveFile.name }}</b></a>
-          <span v-else class="disabled-link">[ No Recent Save File Found ]</span>
+        <grow-button v-if="lastSaveFile" >
+          <a v-on:click="reloadLastSave(lastSaveFile)">Continue <b>{{ lastSaveFile.name }}</b></a>
         </grow-button>
+        <grow-button v-else :disabled="true">
+          <a>No Recent Save File Found</a>
+        </grow-button>
+
         <grow-button>
           <router-link to="/start-new-game">Start New Game</router-link>
         </grow-button>
-        <grow-button>
-          <router-link v-if="saveFileList.length > 0" to="/save-file-management">Manage Save Files</router-link>
-          <span v-else class="disabled-link">[ Manage Save Files ]</span>
+
+        <grow-button v-if="saveFileList.length > 0">
+          <router-link to="/save-file-management">Manage Save Files</router-link>
+        </grow-button>
+        <grow-button v-else :disabled="true">
+          <a>Manage Save Files</a>
         </grow-button>
       </column>
 

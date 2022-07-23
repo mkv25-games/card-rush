@@ -3,7 +3,7 @@
     <h1>Manage Save Files</h1>
     <p v-if="loading">Loading Save Data...</p>
     <div v-else-if="saveFiles.length">
-      <p>Save files are ordered by save date</p>
+      <p>You can load up, or delete save files from this list.</p>
       <ul>
         <li v-for="saveFile in saveFiles" :key="saveFile.filepath">
           <div class="name-label" v-on:click="loadGameRecord(saveFile)">{{ saveFile.name }}</div>
@@ -11,7 +11,6 @@
           <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)"><icon icon="window-close" /></div>
         </li>
       </ul>
-      <p>You can load up, or delete save files from this list.</p>
     </div>
     <div v-else>
       <p>No worlds found.</p>
@@ -19,6 +18,7 @@
         <router-link to="/start-new-game">Start New Game</router-link>
       </grow-button>
     </div>
+    <p>Not what you're looking for?</p>
     <grow-button>
       <router-link to="/overview">&lt; Back</router-link>
     </grow-button>
@@ -80,9 +80,12 @@ ul {
   margin: 0;
   padding: 0;
   display: inline-block;
-  min-width: 700px;
-  border: 4px solid black;
-  background: #555;
+  padding: 5px 40px;
+  width: 60%;
+  border-radius: 10px;
+  border-left: 4px solid plum;
+  border-right: 4px solid plum;
+  background: rgba(60, 60, 60, 0.7);
 }
 li {
   display: flex;
@@ -91,17 +94,28 @@ li {
   color: white;
 }
 li > div {
-  padding: 4px;
   display: inline-block;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+li > div.name-label {
+  margin-left: -35px;
+}
+li > div.delete-label {
+  margin-right: -35px;
 }
 li:hover > div.name-label:hover {
-  background: #444;
+  color: lightblue;
+  background: #333;
 }
 li:hover > div.delete-label:hover {
+  color: #FAA;
   background: #533;
 }
 li > div.name-label {
+  color: gold;
+  font-weight: 700;
   text-align: left;
   flex: 1 1;
   margin-right: 4px;
