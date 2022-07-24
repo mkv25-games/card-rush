@@ -13,6 +13,18 @@ export function calculateHexagonRing (center, radius) {
   return hexes
 }
 
+export function mapHexesToSet (list) {
+  return list.reduce((acc, hex) => {
+    acc[hex.id()] = hex
+    return acc
+  }, {})
+}
+
+export function intersectHexes (setA, setB) {
+  const bMap = mapHexesToSet(setB)
+  return setA.filter(a => bMap[a.id()])
+}
+
 export function calculateHexagonSpiral (center, radius) {
   const rings = [center]
   for (let k = 1; k < radius; k++) {
@@ -28,4 +40,13 @@ export function createScreenLayout (tileSize, offset) {
   const size = new Point(tileSize / 2, tileSize / 2)
   const screenLayout = new Layout(Layout.pointy, size, offset)
   return screenLayout
+}
+
+export function calculateBoundingBox (locations) {
+  return {
+    top: Math.min(...locations.map(loc => loc.y)),
+    left: Math.min(...locations.map(loc => loc.x)),
+    right: Math.max(...locations.map(loc => loc.x)),
+    bottom: Math.max(...locations.map(loc => loc.y))
+  }
 }

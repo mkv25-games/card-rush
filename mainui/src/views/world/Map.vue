@@ -1,11 +1,12 @@
 <template>
   <multi-page-section-view class="multi-page-section world-map">
     <div class="page-content">
-      <world-map :world="world" :show-icons="true"></world-map>
+      <world-map :world="world" :show-icons="true" :show-labels="true"  :show-fog-of-war="true"></world-map>
       <lightbox v-if="showMapInfo">
         <h1><icon icon="map-marked-alt" /> World Map</h1>
         <p>Map of {{ saveFile.name }}</p>
         <tabulation :items="[saveFile.world || {}]" />
+        <world-map :world="world" :show-icons="false" :show-labels="false" :show-fog-of-war="false"></world-map>
         <form-button v-on:click="showMapInfo = false" icon="window-close" label="Hide Map Info" />
       </lightbox>
       <div v-else class="actions show-dialog-button">

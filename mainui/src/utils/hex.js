@@ -13,6 +13,15 @@ export class Hex {
     if (Math.round(q + r + s) !== 0) { throw new Error('q + r + s must be 0') }
   }
 
+  id () {
+    const { q, r, s } = this
+    return `${q}:${r}:${s}`
+  }
+
+  equals (b) {
+    return this.q === b.q && this.r === b.r && this.s === b.s
+  }
+
   add (b) {
     return new Hex(this.q + b.q, this.r + b.r, this.s + b.s)
   }
