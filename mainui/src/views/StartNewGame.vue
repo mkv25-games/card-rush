@@ -6,26 +6,26 @@
     <lightbox v-if="showDialog">
       <h2>Create new world</h2>
       <div class="form">
-        <div class="form-row">
+        <form-row>
           <form-input v-model="filename" placeholder="Name your world" :validator="validateFilename" />
-          <button v-on:click="pickRandomName"><icon icon="dice" /></button>
-        </div>
-        <div class="form-row">
-          <button v-for="world in worlds" :key="world.id" :class="selectedWorldClass(world)" v-on:click="selectedWorld = world">{{ world.name }}</button>
-        </div>
+          <form-button v-on:click="pickRandomName" icon="dice" />
+        </form-row>
+        <form-row>
+          <form-button v-for="world in worlds" :key="world.id" :class="selectedWorldClass(world)" v-on:click="selectedWorld = world">{{ world.name }}</form-button>
+        </form-row>
         <div v-if="formErrors.length" class="form-errors">
           <h3>Can't create world</h3>
           <p class="form-error" v-for="message in formErrors" :key="message">{{ message }}</p>
         </div>
-        <p class="actions">
-          <router-link to="/"><icon icon="window-close" /><label>Cancel</label></router-link>
-          <button v-on:click="submitForm"><icon icon="pen" /><label>Create</label></button>
-          <button v-on:click="showDialog = false"><icon icon="map-marked-alt" /><label>Preview</label></button>
-        </p>
+        <form-actions>
+          <form-button to="/" icon="window-close" label="Cancel" />
+          <form-button v-on:click="submitForm" icon="pen" label="Create" />
+          <form-button v-on:click="showDialog = false" icon="map-marked-alt" label="Preview" />
+        </form-actions>
       </div>
     </lightbox>
     <p v-else class="actions show-dialog-button">
-      <button v-on:click="showDialog = true"><icon icon="map-marked-alt" /><label>Hide</label></button>
+      <form-button v-on:click="showDialog = true" icon="map-marked-alt" label="Hide" />
     </p>
   </div>
 </template>
@@ -146,51 +146,6 @@ div.start-new-game {
 div.form {
   display: inline-block;
   width: 100%;
-}
-div.form-row {
-  display: flex;
-  align-items: center;
-}
-div.form-row > label {
-  flex: 1 1;
-  text-align: right;
-  margin: 0.5em;
-}
-div.form-row > input {
-  flex: 1 1;
-}
-p.actions {
-  display: flex;
-  justify-content: center;
-}
-p.actions > * {
-  flex: 0 1;
-  margin: 0.5em;
-}
-p.actions > button, p.actions > a, button, input {
-  border: 1px solid black;
-  border-radius: 0.4em;
-  color: black;
-  background: white;
-  margin: 0.2em;
-  padding: 0.4em 1.2em;
-  font-size: 0.9em;
-  text-decoration: none;
-  font-family: inherit;
-  cursor: default;
-}
-p.actions > button:hover, p.actions > a:hover, button:hover, input:focus, button.selected {
-  background: rgb(248, 187, 102);
-}
-p.actions > button:active, p.actions > a:active, button:active {
-  background: rgb(218, 131, 32);
-}
-input.not-ok {
-  background: rgb(244, 124, 124)
-}
-button > .icon {
-  font-size: 1.2em;
-  margin: -0.2em -0.5em;
 }
 .preview-world {
   max-height: 50vh;

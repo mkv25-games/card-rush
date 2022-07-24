@@ -64,7 +64,6 @@ export default {
 
 <style scoped>
 input {
-  flex: 0 1;
   margin: 0.5em;
 }
 input {
