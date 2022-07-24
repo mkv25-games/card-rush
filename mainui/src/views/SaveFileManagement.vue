@@ -32,7 +32,7 @@
     </div>
     <p>Not what you're looking for?</p>
     <grow-button>
-      <router-link to="/overview">&lt; Back</router-link>
+      <router-link to="/main-menu">&lt; Back</router-link>
     </grow-button>
     <div v-if="errors.length > 0" class="errors">
       <h2>Errors</h2>
@@ -66,7 +66,7 @@ export default {
     async loadGameRecord (savefile) {
       try {
         await this.$store.dispatch('loadGameRecord', savefile)
-        this.$router.push({ path: '/overview' })
+        this.$router.push({ path: '/main-menu' })
       } catch (ex) {
         this.errors.push(`Unable to load savefile ${savefile.filepath}.`)
       }

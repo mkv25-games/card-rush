@@ -1,6 +1,6 @@
 <template>
-  <div class="overview">
-    <h1>Game Overview</h1>
+  <div class="mainmenu">
+    <h1>Main Menu</h1>
 
     <div class="column">
       <h2>World Management</h2>
@@ -28,25 +28,25 @@
 
     </div>
     <div class="column">
-      <h2>Discoveries</h2>
-      <p>Information about available characters:</p>
-      <VerticalTileGrid :tiles="characters" :columns="1" :rows="4" :tileWidth="300">
+      <h2>Recent Discoveries</h2>
+      <h3>Characters</h3>
+      <vertical-tile-grid :tiles="characters" :columns="1" :rows="4" :tileWidth="300">
         <template v-slot="{ tile }">
           <div class="icon-label" :style="{ background: tile.color }">
             <span><font-awesome-icon :icon="['fas', tile.icon || 'star']" /></span>
             <label>{{ tile.name }}</label>
           </div>
         </template>
-      </VerticalTileGrid>
-      <p>Locations:</p>
-      <VerticalTileGrid :tiles="locations" :columns="1" :rows="4" :tileWidth="300">
+      </vertical-tile-grid>
+      <h3>Locations</h3>
+      <vertical-tile-grid :tiles="locations" :columns="1" :rows="4" :tileWidth="300">
         <template v-slot="{ tile }">
           <div class="icon-label" :style="{ background: tile.color }">
             <span><font-awesome-icon :icon="['fas', tile.icon || 'star']" /></span>
             <label>{{ tile.name }}</label>
           </div>
         </template>
-      </VerticalTileGrid>
+      </vertical-tile-grid>
     </div>
   </div>
 </template>

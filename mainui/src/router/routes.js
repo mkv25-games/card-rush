@@ -1,7 +1,7 @@
 /* Generated file: node data-scripts/find-all-routes.js */
 
 import Home from '../views/Home.vue'
-import Overview from '../views/Overview.vue'
+import MainMenu from '../views/MainMenu.vue'
 import SaveFileManagement from '../views/SaveFileManagement.vue'
 import ComponentTests from '../views/settings/debug/ComponentTests.vue'
 import Debug from '../views/settings/debug/Debug.vue'
@@ -24,9 +24,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/overview',
-    name: 'Overview',
-    component: Overview
+    path: '/main-menu',
+    name: 'Main Menu',
+    component: MainMenu
   },
   {
     path: '/save-file-management',

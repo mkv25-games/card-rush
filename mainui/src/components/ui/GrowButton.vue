@@ -38,15 +38,15 @@ export default {
 }
 .grow-button.enabled a {
   color: gold;
+  background: rgba(140, 5, 5, 0.7);
   border-left: 4px solid gold;
   border-right: 4px solid gold;
-  background: rgba(140, 5, 5, 0.7);
 }
 .grow-button.enabled:hover a {
   color: lightskyblue;
+  background: rgba(0, 0, 0, 0.7);
   border-left: 4px solid lightpink;
   border-right: 4px solid lightpink;
-  background: rgba(0, 0, 0, 0.7);
   padding: 10px 10px;
 }
 .grow-button:active a {

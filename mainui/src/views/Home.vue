@@ -12,7 +12,7 @@
       </div>
       <div v-else>
         <grow-button>
-          <router-link to="/overview" draggable="false">Begin A New Adventure</router-link>
+          <router-link to="/main-menu" draggable="false">Begin A New Adventure</router-link>
         </grow-button>
       </div>
       <p>&nbsp;</p>
