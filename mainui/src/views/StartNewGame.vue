@@ -7,7 +7,7 @@
       <h2>Create new world</h2>
       <div class="form">
         <div class="form-row">
-          <input v-model="filename" placeholder="Enter text" />
+          <form-input v-model="filename" placeholder="Name your world" :validator="validateFilename" />
           <button v-on:click="pickRandomName"><icon icon="dice" /></button>
         </div>
         <div class="form-row">
@@ -74,21 +74,43 @@ export default {
       }
       return ''
     },
+    validateClass (fn) {
+      const errors = fn()
+      return errors.length ? 'no-ok' : 'ok'
+    },
+    validateFilename () {
+      const { filename } = this
+      const formErrors = []
+      if (!filename) {
+        formErrors.push('No world name chosen')
+      }
+      if (filename && filename.length > 30) {
+        formErrors.push('World name is too long; max 30 characters.')
+      }
+      return formErrors
+    },
+    validateWorldSize () {
+      const { selectedWorld } = this
+      const formErrors = []
+      if (!selectedWorld || !selectedWorld.size) {
+        formErrors.push('World size is too small!')
+      }
+      return formErrors
+    },
     validateForm () {
-      this.formErrors = []
-      if (!this.filename) {
-        this.formErrors.push('No world name chosen')
-      }
-
-      if (!this.selectedWorld || !this.selectedWorld.size) {
-        this.formErrors.push('World size is too small!')
-      }
-
+      const { validateFilename, validateWorldSize } = this
+      const validators = [validateFilename, validateWorldSize]
+      this.formErrors = validators.map(validator => validator()).flat()
       return this.formErrors.length === 0
     },
     pickRandomName () {
-      const world = this.$store.state.gamedata.WorldNames[0] || { names: ['Random World Names'] }
-      const worldNames = world.names.split(' ').map(n => n.trim())
+      const gameDataWorldNames = this.$store.state.gamedata.WorldNames || [{ names: 'Random World Names' }]
+      const worldNames = gameDataWorldNames.map(wn => {
+        const names = wn.names || ''
+        return names.split(' ')
+      }).flat(1)
+        .map(n => n.trim())
+        .filter(n => n)
       const index1 = Math.floor(Math.random() * worldNames.length)
       const index2 = Math.floor(Math.random() * worldNames.length)
       this.filename = [worldNames[index1 % worldNames.length], worldNames[index2 % worldNames.length]].join(' ')
@@ -162,6 +184,9 @@ p.actions > button:hover, p.actions > a:hover, button:hover, input:focus, button
 }
 p.actions > button:active, p.actions > a:active, button:active {
   background: rgb(218, 131, 32);
+}
+input.not-ok {
+  background: rgb(244, 124, 124)
 }
 button > .icon {
   font-size: 1.2em;

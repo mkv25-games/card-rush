@@ -4,13 +4,17 @@
     <p v-if="loading">Loading Save Data...</p>
     <div v-else-if="saveFiles.length">
       <p>You can load up, or delete save files from this list.</p>
-      <ul>
-        <li v-for="saveFile in saveFiles" :key="saveFile.filepath">
-          <div class="name-label" v-on:click="loadGameRecord(saveFile)">{{ saveFile.name }}</div>
-          <div class="date-label">{{ formatDate(saveFile.fileinfo.mtime) }}</div>
-          <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)"><icon icon="window-close" /></div>
-        </li>
-      </ul>
+      <paginated-items :items="saveFiles" :page-size="10" item-type-plural="worlds">
+        <template #default="{ paginatedItems }">
+          <ul>
+            <li v-for="saveFile in paginatedItems" :key="saveFile.filepath">
+              <div class="name-label" v-on:click="loadGameRecord(saveFile)">{{ saveFile.name }}</div>
+              <div class="date-label">{{ formatDate(saveFile.fileinfo.mtime) }}</div>
+              <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)"><icon icon="window-close" /></div>
+            </li>
+          </ul>
+        </template>
+      </paginated-items>
     </div>
     <div v-else>
       <p>No worlds found.</p>
@@ -76,12 +80,14 @@ export default {
 </script>
 
 <style scoped>
+.paginated-items {
+  width: 60%;
+}
 ul {
   margin: 0;
   padding: 0;
   display: inline-block;
-  padding: 5px 40px;
-  width: 60%;
+  padding: 5px 0;
   border-radius: 10px;
   border-left: 4px solid plum;
   border-right: 4px solid plum;
@@ -100,10 +106,10 @@ li > div {
   border-radius: 5px;
 }
 li > div.name-label {
-  margin-left: -35px;
+  margin-left: 0;
 }
 li > div.delete-label {
-  margin-right: -35px;
+  margin-right: 0;
 }
 li:hover > div.name-label:hover {
   color: lightblue;
