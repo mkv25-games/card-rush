@@ -52,8 +52,9 @@
 </template>
 
 <script>
-import listSaveFiles from '@/formatting/listSaveFiles'
 import VerticalTileGrid from '../components/ui/VerticalTileGrid.vue'
+import commonComputed from '@/utils/commonComputed'
+import commonMethods from '@/utils/commonMethods'
 
 export default {
   async mounted () {
@@ -62,26 +63,8 @@ export default {
       this.$store.dispatch('loadModpacks')
     ])
   },
-  computed: {
-    saveFileList () {
-      return this.$store.state.saveFileList
-    },
-    lastSaveFile () {
-      return listSaveFiles(this.saveFileList)[0] || false
-    },
-    characters () {
-      return this.$store.state.gamedata.Character || []
-    },
-    locations () {
-      return this.$store.state.gamedata.Location || []
-    }
-  },
-  methods: {
-    async reloadLastSave (saveFile) {
-      await this.$store.dispatch('loadGameRecord', saveFile)
-      this.$router.push({ path: '/world/map' })
-    }
-  },
+  computed: Object.assign({}, commonComputed),
+  methods: Object.assign({}, commonMethods),
   components: { VerticalTileGrid }
 }
 </script>

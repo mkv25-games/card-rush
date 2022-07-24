@@ -7,7 +7,7 @@
       <p>&nbsp;</p>
       <div v-if="$store.state.saveFileList.length > 0">
         <grow-button>
-          <router-link to="/overview" draggable="false">Continue Your Adventure <icon icon="angle-double-right" /></router-link>
+          <a v-on:click="reloadLastSave(lastSaveFile)">Continue <b>{{ lastSaveFile.name }}</b></a>
         </grow-button>
       </div>
       <div v-else>
@@ -21,10 +21,15 @@
 </template>
 
 <script>
+import commonComputed from '@/utils/commonComputed'
+import commonMethods from '@/utils/commonMethods'
+
 export default {
   async mounted () {
     await this.$store.dispatch('refreshSaveFileList')
-  }
+  },
+  computed: Object.assign({}, commonComputed),
+  methods: Object.assign({}, commonMethods)
 }
 </script>
 

@@ -3,6 +3,7 @@
     <h1>Manage Save Files</h1>
     <lightbox v-if="deleteConfirmation">
       <h2>Are you sure you want to delete {{ deleteConfirmation }}?</h2>
+      <p v-if="deleteError">{{ deleteError }}</p>
       <form-actions>
         <form-button v-on:click="deleteConfirmation = ''" icon="angle-double-left" label="No - Cancel" />
         <form-button v-on:click="deleteSaveFile(deleteConfirmation)" icon="window-close"  label="Yes - Delete" />
@@ -71,7 +72,13 @@ export default {
       }
     },
     async deleteSaveFile (key) {
-      await this.electron.clearData(key)
+      try {
+        await this.electron.clearData(key)
+        this.deleteConfirmation = ''
+        this.deleteError = ''
+      } catch (ex) {
+        this.deleteError = `Unable to delete file: ${ex.message}`
+      }
       return this.findSaveFiles()
     },
     async findSaveFiles () {
