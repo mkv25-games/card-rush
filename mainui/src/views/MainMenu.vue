@@ -96,14 +96,14 @@ a:hover {
   align-items: stretch;
   margin: auto;
   width: 100%;
+  font-weight: bold;
 }
 .icon-label:hover {
   background: #111;
-  color: white;
+  font-weight: bold;
 }
 .icon-label:active {
   background: #444;
-  color: white;
 }
 .icon-label > span {
   display: flex;
@@ -120,5 +120,11 @@ a:hover {
   align-items: center;
   flex: 1 50;
   padding: 0.5em;
+}
+.icon-label:hover > * {
+  background: rgba(255, 255, 255, 0.1);
+}
+.icon-label:active > * {
+  background: rgba(0, 0, 0, 0.1);
 }
 </style>

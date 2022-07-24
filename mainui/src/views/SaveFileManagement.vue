@@ -66,7 +66,7 @@ export default {
     async loadGameRecord (savefile) {
       try {
         await this.$store.dispatch('loadGameRecord', savefile)
-        this.$router.push({ path: '/main-menu' })
+        this.$router.push({ path: '/world/map' })
       } catch (ex) {
         this.errors.push(`Unable to load savefile ${savefile.filepath}.`)
       }
