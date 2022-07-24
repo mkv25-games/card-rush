@@ -1,10 +1,6 @@
 <template>
-  <g :transform="`translate(${location.x - hw} ${location.y - hh})`">
-    <circle
-      :r="hexRadius"
-      :cx="hw"
-      :cy="hh"
-      :fill="color" />
+  <g :transform="`translate(${location.x} ${location.y})`">
+    <polygon :points="polyHexPoints" :fill="color" stroke="#967969" stroke-width="3" />
     <text
       fill="black" stroke="none"
       font-family="Avenir, Helvetica, Arial, sans-serif"
@@ -12,7 +8,7 @@
       font-size="15"
       text-anchor="middle">
     </text>
-    <foreignObject class="node" x="0" y="0" :width="width" :height="height">
+    <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
       <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
         <div>
           <icon v-if="showIcon" :icon="findIcon(location)" />
@@ -24,6 +20,11 @@
 </template>
 
 <script>
+import { Hex } from '@/utils/hex'
+import { createScreenLayout } from '@/utils/hexLayout.js'
+
+const centerHex = new Hex(0, 0, 0)
+
 export default {
   props: {
     location: {
@@ -70,6 +71,11 @@ export default {
     },
     color () {
       return this.location.color || 'grey'
+    },
+    polyHexPoints () {
+      const hexLayout = createScreenLayout(this.width * 0.95)
+      const points = hexLayout.polygonCorners(centerHex)
+      return points.map(p => [p.x, p.y].join(' ')).join(',')
     }
   }
 }

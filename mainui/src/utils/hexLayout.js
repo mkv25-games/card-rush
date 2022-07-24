@@ -23,9 +23,9 @@ export function calculateHexagonSpiral (center, radius) {
   return hexes
 }
 
-export function createScreenLayout (tileSize) {
+export function createScreenLayout (tileSize, offset) {
+  offset = offset || new Point(0, 0)
   const size = new Point(tileSize / 2, tileSize / 2)
-  const offset = new Point(0, 0)
   const screenLayout = new Layout(Layout.pointy, size, offset)
   return screenLayout
 }
