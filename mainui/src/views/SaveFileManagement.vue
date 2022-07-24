@@ -1,6 +1,13 @@
 <template>
   <div class="save-file-management">
     <h1>Manage Save Files</h1>
+    <lightbox v-if="deleteConfirmation">
+      <h2>Are you sure you want to delete {{ deleteConfirmation }}?</h2>
+      <form-actions>
+        <form-button v-on:click="deleteConfirmation = ''" icon="angle-double-left" label="No - Cancel" />
+        <form-button v-on:click="deleteSaveFile(deleteConfirmation)" icon="window-close"  label="Yes - Delete" />
+      </form-actions>
+    </lightbox>
     <p v-if="loading">Loading Save Data...</p>
     <div v-else-if="saveFiles.length">
       <p>You can load up, or delete save files from this list.</p>
@@ -10,7 +17,7 @@
             <li v-for="saveFile in paginatedItems" :key="saveFile.filepath">
               <div class="name-label" v-on:click="loadGameRecord(saveFile)">{{ saveFile.name }}</div>
               <div class="date-label">{{ formatDate(saveFile.fileinfo.mtime) }}</div>
-              <div class="delete-label" v-on:click="deleteSaveFile(saveFile.name)"><icon icon="window-close" /></div>
+              <div class="delete-label" v-on:click="showDeleteConfirmation(saveFile.name)"><icon icon="window-close" /></div>
             </li>
           </ul>
         </template>
@@ -42,6 +49,7 @@ export default {
   data () {
     return {
       errors: [],
+      deleteConfirmation: '',
       loading: true
     }
   },
@@ -70,6 +78,9 @@ export default {
       this.loading = true
       await this.$store.dispatch('refreshSaveFileList')
       this.loading = false
+    },
+    showDeleteConfirmation (savefileName) {
+      this.deleteConfirmation = savefileName
     },
     formatDate
   },

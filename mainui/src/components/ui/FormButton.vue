@@ -55,15 +55,15 @@ export default {
   text-decoration: none;
   color: black;
 }
-.form-button:hover, .form-button.selected {
+.form-button:hover {
   background: rgb(248, 187, 102);
+  outline: 1px solid orange;
 }
 .form-button:active {
   background: rgb(218, 131, 32);
 }
-.form-button:focus {
+.form-button:focus, .form-button.selected {
   background: rgb(248, 187, 102);
-  outline: 1px solid orange;
 }
 .form-button.not-ok {
   background: rgb(244, 124, 124);
