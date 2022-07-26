@@ -1,7 +1,7 @@
 <template>
   <svg v-if="layout" :viewBox="viewBox">
-    <g :transform="`translate(${layout.width / 2} ${layout.height / 2})`">
-      <world-map-location v-for="location in layout.locations" :key="location.id"
+    <g :transform="viewCenter">
+      <world-map-location v-for="location in layout.locations" :key="[location.id, location.data.id].join(':')"
         :show-icon="showIcons"
         :show-label="showLabels"
         :class="location.className || 'location'"
@@ -51,6 +51,10 @@ export default {
       type: Object,
       default () {}
     },
+    center: {
+      type: Object,
+      default: null
+    },
     showIcons: {
       type: Boolean,
       default: false
@@ -70,7 +74,15 @@ export default {
     },
     viewBox () {
       const { layout } = this
-      return [0, 0, layout.width, layout.height].join(' ')
+      return [layout.minx, layout.miny, layout.width, layout.height].join(' ')
+    },
+    viewCenter () {
+      const { layout } = this
+      const { displayCenter, spiralCenter } = layout
+      console.log({ displayCenter, spiralCenter })
+      const x = -(displayCenter.x - spiralCenter.x) + (layout.tileSize / 2)
+      const y = -(displayCenter.y - spiralCenter.y) + (layout.tileSize / 2)
+      return `translate(${x} ${y})`
     }
   },
   async mounted () {
@@ -81,21 +93,32 @@ export default {
   },
   methods: {
     updateLayout () {
-      const { world, locationTypes, showFogOfWar } = this
-      const defaultLayout = this.createWorldLayout({ world, locationTypes })
-      const layout = showFogOfWar ? computeFogOfWar(defaultLayout) : defaultLayout
+      const { world, center, locationTypes, showFogOfWar } = this
+      const defaultWorldLocations = createWorldLocations({ world, locationTypes })
+      const centerHex = center ? center.hex : null
+      const worldLocations = showFogOfWar ? computeFogOfWar(defaultWorldLocations, centerHex) : defaultWorldLocations
+      const layout = this.createDisplayLayout(worldLocations, center)
       this.layout = layout
       graduallyShowLocationsInOrder({ locations: this.layout.locations })
     },
-    createWorldLayout ({ world, locationTypes }) {
-      const locations = createWorldLocations({ world, locationTypes }).map(location => mapLocationToScreen(location, screenLayout, tileSize))
+    createDisplayLayout (worldLocations, center) {
+      const spiralCenter = worldLocations[0]
+      center = center || spiralCenter
+      const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
+      const displayLocations = worldLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
 
-      const { top, left, right, bottom } = calculateBoundingBox(locations)
+      const { top, left, right, bottom } = calculateBoundingBox(displayLocations)
+      const minx = left
+      const miny = top
       return {
-        locations,
+        locations: displayLocations,
+        minx,
+        miny,
         width: Math.abs(right - left) + (tileSize),
         height: Math.abs(bottom - top) + (tileSize),
-        tileSize
+        tileSize,
+        displayCenter,
+        spiralCenter: mapLocationToScreen(spiralCenter, screenLayout, tileSize)
       }
     },
     selectLocation (location) {
@@ -107,6 +130,9 @@ export default {
   },
   watch: {
     world () {
+      this.updateLayout()
+    },
+    center () {
       this.updateLayout()
     }
   }

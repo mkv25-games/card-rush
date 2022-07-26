@@ -1,8 +1,9 @@
-import { Layout, Point } from './hex.js'
+import { Hex, Layout, Point } from './hex.js'
+const zero = new Hex(0, 0, 0)
 
 export function calculateHexagonRing (center, radius) {
   const hexes = []
-  let hex = center.add(center.neighbor(4).scale(radius))
+  let hex = center.add(zero.neighbor(4).scale(radius))
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < radius; j++) {
       hexes.push(hex)
@@ -43,10 +44,12 @@ export function createScreenLayout (tileSize, offset) {
 }
 
 export function calculateBoundingBox (locations) {
-  return {
+  const boundary = {
     top: Math.min(...locations.map(loc => loc.y)),
     left: Math.min(...locations.map(loc => loc.x)),
     right: Math.max(...locations.map(loc => loc.x)),
     bottom: Math.max(...locations.map(loc => loc.y))
   }
+  console.log('Bounding Box:', boundary)
+  return boundary
 }

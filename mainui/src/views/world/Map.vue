@@ -3,6 +3,7 @@
     <div class="page-content">
       <world-map
         :world="world"
+        :center="selectedLocation"
         :show-icons="true"
         :show-labels="true"
         :show-fog-of-war="true"
@@ -24,8 +25,8 @@
         <div class="actions show-dialog-button">
           <form-button v-on:click="showMapInfo = true" icon="map-marked-alt" label="Show Map Info" />
         </div>
-        <div class="location-info">
-          <div></div>
+        <div class="location-info" v-if="selectedLocation">
+          <form-button :icon="selectedLocation.data.icon" :label="selectedLocation.data.name" />
         </div>
       </div>
     </div>

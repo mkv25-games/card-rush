@@ -1,5 +1,5 @@
 import { generateSeedFrom } from './seeds.js'
-import { calculateBoundingBox, calculateHexagonSpiral, mapHexesToSet } from './hexLayout.js'
+import { calculateHexagonSpiral } from './hexLayout.js'
 import { Hex } from './hex.js'
 
 export function createWorldLocations ({ world, locationTypes }) {
@@ -22,18 +22,25 @@ export function createNewLocation ({ worldSeed, locationTypes, hex, index }) {
   return location
 }
 
-export function computeFogOfWar ({ locations, center, tileSize }) {
-  center = center || new Hex(0, 0, 0)
+export function mapLocationsToSet (list) {
+  return list.reduce((acc, loc) => {
+    const { hex } = loc
+    acc[hex.id()] = loc
+    return acc
+  }, {})
+}
+
+export function computeFogOfWar (locations, centerHex) {
+  centerHex = centerHex || new Hex(0, 0, 0)
+  console.log('Computing fog of war from:', centerHex)
   const fogRadius = 3
-  const fogSpiral = calculateHexagonSpiral(center, fogRadius)
-  const fogMap = mapHexesToSet(fogSpiral)
+  const fogSpiral = calculateHexagonSpiral(centerHex, fogRadius)
+  const locationsMap = mapLocationsToSet(locations)
 
-  const fogLocations = locations.filter(loc => fogMap[loc.hex.id()])
+  console.log('Locations Map:', locationsMap)
 
-  const { top, left, right, bottom } = calculateBoundingBox(fogLocations)
-  return {
-    locations: fogLocations,
-    width: Math.abs(right - left) + (tileSize),
-    height: Math.abs(bottom - top) + (tileSize)
-  }
+  const fogLocations = fogSpiral.map(hex => locationsMap[hex.id()])
+    .filter(n => n)
+
+  return fogLocations
 }
