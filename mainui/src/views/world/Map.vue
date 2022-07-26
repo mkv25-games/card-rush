@@ -1,16 +1,32 @@
 <template>
   <multi-page-section-view class="multi-page-section world-map">
     <div class="page-content">
-      <world-map :world="world" :show-icons="true" :show-labels="true"  :show-fog-of-war="true"></world-map>
+      <world-map
+        :world="world"
+        :show-icons="true"
+        :show-labels="true"
+        :show-fog-of-war="true"
+        v-on:highlight-location="handleHighlightedLocation"
+        v-on:select-location="handleSelectedLocation"
+        ></world-map>
       <lightbox v-if="showMapInfo">
         <h1><icon icon="map-marked-alt" /> World Map</h1>
         <p>Map of {{ saveFile.name }}</p>
         <tabulation :items="[saveFile.world || {}]" />
-        <world-map :world="world" :show-icons="false" :show-labels="false" :show-fog-of-war="false"></world-map>
+        <world-map
+          :world="world"
+          :show-icons="false"
+          :show-labels="false"
+          :show-fog-of-war="false"></world-map>
         <form-button v-on:click="showMapInfo = false" icon="window-close" label="Hide Map Info" />
       </lightbox>
-      <div v-else class="actions show-dialog-button">
-        <form-button v-on:click="showMapInfo = true" icon="map-marked-alt" label="Show Map Info" />
+      <div v-else>
+        <div class="actions show-dialog-button">
+          <form-button v-on:click="showMapInfo = true" icon="map-marked-alt" label="Show Map Info" />
+        </div>
+        <div class="location-info">
+          <div></div>
+        </div>
       </div>
     </div>
   </multi-page-section-view>
@@ -20,7 +36,9 @@
 export default {
   data () {
     return {
-      showMapInfo: false
+      showMapInfo: false,
+      highlightedLocation: null,
+      selectedLocation: null
     }
   },
   computed: {
@@ -29,6 +47,14 @@ export default {
     },
     world () {
       return this.saveFile.world || { name: 'Unknown World' }
+    }
+  },
+  methods: {
+    handleHighlightedLocation (location) {
+      this.highlightedLocation = location
+    },
+    handleSelectedLocation (location) {
+      this.selectedLocation = location
     }
   }
 }
@@ -51,5 +77,10 @@ export default {
   position: absolute;
   top: 1em;
   right: 1em;
+}
+.location-info {
+  position: absolute;
+  top: 1em;
+  left: 1em;
 }
 </style>

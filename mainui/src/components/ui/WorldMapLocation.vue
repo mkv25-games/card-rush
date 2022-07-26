@@ -95,6 +95,9 @@ export default {
 </script>
 
 <style scoped>
+foreignObject {
+  pointer-events: none;
+}
 .wml {
   cursor: default;
   user-select: none;

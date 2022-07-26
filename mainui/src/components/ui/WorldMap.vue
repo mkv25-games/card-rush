@@ -5,6 +5,8 @@
         :show-icon="showIcons"
         :show-label="showLabels"
         :class="location.className || 'location'"
+        v-on:mousedown="selectLocation(location)"
+        v-on:mouseover="highlightLocation(location)"
         :location="location" />
     </g>
   </svg>
@@ -95,6 +97,12 @@ export default {
         height: Math.abs(bottom - top) + (tileSize),
         tileSize
       }
+    },
+    selectLocation (location) {
+      this.$emit('selectLocation', location)
+    },
+    highlightLocation (location) {
+      this.$emit('highlightLocation', location)
     }
   },
   watch: {
