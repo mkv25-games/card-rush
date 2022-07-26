@@ -224,7 +224,9 @@ export default {
         ArrowUp: () => this.scrollDirection(0, delta),
         ArrowDown: () => this.scrollDirection(0, -delta),
         ArrowLeft: () => this.scrollDirection(delta, 0),
-        ArrowRight: () => this.scrollDirection(-delta, 0)
+        ArrowRight: () => this.scrollDirection(-delta, 0),
+        Equal: () => this.zoomIn(),
+        Minus: () => this.zoomOut()
       }
       const noop = () => {}
       const fn = map[ev.code] || noop
