@@ -6,7 +6,8 @@ export function createWorldLocations ({ world, locationTypes }) {
   const radius = world ? world.size : 4 || 4
   const worldSeed = generateSeedFrom(world.name || 'unknown')
   const center = new Hex(0, 0, 0)
-  const locations = world.locations || calculateHexagonSpiral(center, radius).map((hex, index) => createSeededLocation({ worldSeed, locationTypes, hex, index }))
+  const validTypes = locationTypes.filter(lt => lt.id !== 'out-of-bounds')
+  const locations = world.locations || calculateHexagonSpiral(center, radius).map((hex, index) => createSeededLocation({ worldSeed, locationTypes: validTypes, hex, index }))
   return locations
 }
 
@@ -42,15 +43,17 @@ export function mapLocationsToSet (list) {
 
 export function computeFogOfWar ({ locations, locationTypes, centerHex }) {
   centerHex = centerHex || new Hex(0, 0, 0)
-  console.log('Computing fog of war from:', centerHex)
-  const fogRadius = 3
+
+  const visibleRadius = 3
+  const visibleSpiral = calculateHexagonSpiral(centerHex, visibleRadius)
+  const fogRadius = visibleRadius + 2
   const fogSpiral = calculateHexagonSpiral(centerHex, fogRadius)
+
   const locationsMap = mapLocationsToSet(locations)
+  const displayLocations = visibleSpiral.map(hex => locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex }))
 
-  console.log('Locations Map:', locationsMap)
+  const displayLocationsMap = mapLocationsToSet(displayLocations)
+  const borderLocations = fogSpiral.map(hex => displayLocationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex }))
 
-  const fogLocations = fogSpiral.map(hex => locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex }))
-    .filter(n => n)
-
-  return fogLocations
+  return { displayLocations, borderLocations }
 }

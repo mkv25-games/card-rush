@@ -96,22 +96,24 @@ export default {
       const { world, center, locationTypes, showFogOfWar } = this
       const defaultWorldLocations = createWorldLocations({ world, locationTypes })
       const centerHex = center ? center.hex : null
-      const worldLocations = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultWorldLocations
-      const layout = this.createDisplayLayout(worldLocations, center)
+      const defaultVisibleLocations = { displayLocations: defaultWorldLocations, borderLocations: defaultWorldLocations }
+      const { displayLocations, borderLocations } = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultVisibleLocations
+      const layout = this.createDisplayLayout({ displayLocations, borderLocations, center })
       this.layout = layout
       graduallyShowLocationsInOrder({ locations: this.layout.locations })
     },
-    createDisplayLayout (worldLocations, center) {
-      const spiralCenter = worldLocations[0]
+    createDisplayLayout ({ displayLocations, borderLocations, center }) {
+      const spiralCenter = displayLocations[0]
       center = center || spiralCenter
       const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
-      const displayLocations = worldLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const displayLocationsRef = displayLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
 
-      const { top, left, right, bottom } = calculateBoundingBox(displayLocations)
+      const { top, left, right, bottom } = calculateBoundingBox(displayLocationsRef)
       const minx = left
       const miny = top
       return {
-        locations: displayLocations,
+        locations: borderLocationsRef,
         minx,
         miny,
         width: Math.abs(right - left) + (tileSize),
