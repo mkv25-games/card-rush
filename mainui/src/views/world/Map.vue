@@ -55,7 +55,9 @@ export default {
       this.highlightedLocation = location
     },
     handleSelectedLocation (location) {
-      this.selectedLocation = location
+      if (location.data.id !== 'out-of-bounds') {
+        this.selectedLocation = location
+      }
     }
   }
 }

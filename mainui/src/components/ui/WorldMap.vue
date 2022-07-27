@@ -96,7 +96,7 @@ export default {
       const { world, center, locationTypes, showFogOfWar } = this
       const defaultWorldLocations = createWorldLocations({ world, locationTypes })
       const centerHex = center ? center.hex : null
-      const worldLocations = showFogOfWar ? computeFogOfWar(defaultWorldLocations, centerHex) : defaultWorldLocations
+      const worldLocations = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultWorldLocations
       const layout = this.createDisplayLayout(worldLocations, center)
       this.layout = layout
       graduallyShowLocationsInOrder({ locations: this.layout.locations })

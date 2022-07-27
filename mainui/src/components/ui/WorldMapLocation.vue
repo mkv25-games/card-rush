@@ -52,8 +52,10 @@ export default {
   },
   computed: {
     className () {
+      const { outOfBounds } = this
       const { animationState } = this.location
-      return ['wml', animationState || 'hidden'].join(' ')
+      const oobClass = outOfBounds ? 'out-of-bounds' : 'in-bounds'
+      return ['wml', animationState || 'hidden', oobClass].join(' ')
     },
     width () {
       return this.location.width || 100
@@ -89,6 +91,9 @@ export default {
       const hexLayout = createScreenLayout(this.width * 0.95)
       const points = hexLayout.polygonCorners(centerHex)
       return points.map(p => [p.x, p.y].join(' ')).join(',')
+    },
+    outOfBounds () {
+      return this.location.data.id === 'out-of-bounds'
     }
   }
 }
@@ -114,8 +119,11 @@ foreignObject {
 .wml > g > polygon {
   transition: stroke 100ms ease-out;
 }
-.wml:hover > g > polygon {
+.wml.in-bounds:hover > g > polygon {
   stroke: white;
+}
+.wml.out-of-bounds {
+  opacity: 0.4;
 }
 .visible {
   transform: translateY(0);
