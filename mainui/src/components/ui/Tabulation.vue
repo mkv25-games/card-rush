@@ -41,11 +41,14 @@
             <span v-else-if="cellType(cell, column) === 'icon'">
               <icon :icon="contentsOf(cell, column)" />
             </span>
+            <span v-else-if="cellType(cell, column) === 'image'">
+              <img :src="`http://localhost:25015/${contentsOf(cell, column)}`" />
+            </span>
             <div v-else-if="cellType(cell, column) === 'color'" style="text-transform: uppercase; font-family: monospace;">
               <span>{{ contentsOf(cell, column) }}</span>
               <icon icon="square" :style="`color: ${contentsOf(cell, column)}`" />
             </div>
-            <span v-else>
+            <span v-else class="default">
               {{ contentsOf(cell, column) }}
             </span>
           </slot>
@@ -178,6 +181,9 @@ export default {
       if (columnKey === 'color') {
         return 'color'
       }
+      if (columnKey === 'image') {
+        return 'image'
+      }
       return typeof value
     },
     columnHeadingClass (columnHeading, i) {
@@ -252,5 +258,8 @@ td {
 }
 .cell.property > b {
   margin: 0 0.5em 0 0;
+}
+table span > img {
+  max-width: 256px;
 }
 </style>

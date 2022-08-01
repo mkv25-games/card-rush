@@ -10,7 +10,8 @@
           <p><checkmark v-model="modpack.packdata.enabled" /> {{ modpack.packdata.enabled ? 'Enabled' : 'Disabled' }} by Default by Modpack author</p>
           <div v-for="([datasetKey, items]) in datasets(modpack)" :key="datasetKey" class="dataset">
             <h3>{{ datasetKey }}</h3>
-            <tabulation :items="items" />
+            <tabulation v-if="datasetKey === 'images'" :items="items.map(item => { return { image: item } })" />
+            <tabulation v-else :items="items" />
           </div>
           <p v-if="modpack.messages.length">{{ modpack.messages }}</p>
         </Collapsed>
