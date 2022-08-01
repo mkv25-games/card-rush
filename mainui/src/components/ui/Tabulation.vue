@@ -42,7 +42,8 @@
               <icon :icon="contentsOf(cell, column)" />
             </span>
             <span v-else-if="cellType(cell, column) === 'image'">
-              <img :src="`http://localhost:25015/${contentsOf(cell, column)}`" />
+              <img :src="`http://localhost:25015/${contentsOf(cell, column)}`" /><br />
+              <label>{{ contentsOf(cell, column, false) }}</label>
             </span>
             <div v-else-if="cellType(cell, column) === 'color'" style="text-transform: uppercase; font-family: monospace;">
               <span>{{ contentsOf(cell, column) }}</span>
@@ -193,10 +194,10 @@ export default {
       const direction = this.computedSortAscending ? 'sort-amount-up' : 'sort-amount-down'
       return this.computedSortedColumn === columnHeading ? direction : 'sort'
     },
-    contentsOf (cell, column) {
+    contentsOf (cell, column, showCellIfEmpty = true) {
       const columnKey = this.columnKeys[column] || column
       const columnContents = cell[columnKey]
-      return columnContents === undefined ? cell : columnContents
+      return columnContents === undefined && showCellIfEmpty ? cell : columnContents
     },
     columnKey (column) {
       return this.columnKeys[column] || column

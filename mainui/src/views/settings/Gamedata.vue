@@ -8,7 +8,8 @@
       </div>
       <div v-for="([datasetKey, items]) in datasets(gamedata)" :key="datasetKey" class="dataset">
         <h3>{{ datasetKey }}</h3>
-        <tabulation :items="items" />
+        <tabulation v-if="datasetKey === 'images'" :items="items.map(item => { return { image: item } })" />
+        <tabulation v-else :items="items" />
       </div>
     </div>
   </settings>
