@@ -3,11 +3,13 @@
       <div class="border column">
         <label class="card-title">{{ card.name || card.error || card.id }}</label>
         <div class="feature-image" :style="featureImageStyle"></div>
-        <label v-if="effects.defense">Defense: {{ effects.defense }}</label>
-        <label v-if="effects.attack">Attack: {{ effects.attack }}</label>
-        <label v-if="effects.guard">Guard: {{ effects.guard }}</label>
-        <label v-if="effects.parry">Parry: {{ effects.parry }}</label>
-        <label v-if="effects.next">Next Turn: {{ effects.next }}</label>
+        <div class="card-description">
+          <label v-if="effects.defense">Defense: {{ effects.defense }}</label>
+          <label v-if="effects.attack">Attack: {{ effects.attack }}</label>
+          <label v-if="effects.guard">Guard: {{ effects.guard }}</label>
+          <label v-if="effects.parry">Parry: {{ effects.parry }}</label>
+          <label v-if="effects.next">Next Turn: {{ effects.next }}</label>
+        </div>
         <div class="baseIcon" :style="{ background: baseColor }">
           <icon :icon="baseIcon || 'seedling'" />
         </div>
@@ -99,15 +101,50 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 2mm 2mm 0 0;
+  z-index: 200;
 }
 
 .feature-image {
   width: 57mm;
-  height: 57mm;
+  height: 52mm;
   border-radius: 2mm;
   overflow: hidden;
   font-size: 0;
   background-size: cover;
+  border-bottom: 1mm solid rgb(83, 76, 55);
+  z-index: 100;
+}
+
+.card-description::before {
+  display: block;
+  content: '';
+  width: 57mm;
+  height: 2mm;
+  margin-top: -1mm;
+  background: black;
+  border-radius: 0 0 2mm 2mm;
+}
+
+.card-description {
+  display: flex;
+  position: absolute;
+  bottom: 1mm;
+  height: 37mm;
+  width: 55mm;
+  font-weight: bold;
+  background: rgba(166, 157, 131, 0.8);
+  color: black;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 0 0 2mm 2mm;
+  border-left: 1mm solid rgb(170, 165, 139);
+  border-right: 1mm solid rgb(83, 76, 55);
+  z-index: 50;
+}
+
+.card-description > label {
+  margin-top: 0.5em;
 }
 
 .baseIcon {
@@ -117,5 +154,6 @@ export default {
   padding: 0.2em 0 0 0.2em;
   font-size: 2em;
   border-radius: 1.0em 0 0 0;
+  z-index: 400;
 }
 </style>
