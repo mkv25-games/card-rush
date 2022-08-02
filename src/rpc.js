@@ -124,13 +124,13 @@ function setupBrowserRPC () {
     return Promise.all(work)
   }
 
-  async function findModpacks () {
+  async function findModpacks (serverPort) {
     const userDataPath = position(await getUserPath())
     const applicationRoot = position(__dirname, '../')
     const defaultModpacks = applicationRoot('modpacks')
     const userModpacks = userDataPath('modpacks')
     const directoryPaths = [defaultModpacks, userModpacks]
-    return modpackLoader(directoryPaths)
+    return modpackLoader(directoryPaths, serverPort)
   }
 
   async function version () {

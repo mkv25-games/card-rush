@@ -73,7 +73,7 @@ async function loadModpack (filepath) {
 }
 
 let modpackServer
-function createServer() {
+function createServer(serverPort) {
   if (modpackServer) {
     return
   }
@@ -101,19 +101,18 @@ function createServer() {
     }
   });
 
-  const modpackServerPort = 25015;
-  modpackServer.listen(modpackServerPort, () => {
-    console.log(`Modpack Server Running on: http://localhost:${modpackServerPort}`)
+  modpackServer.listen(serverPort, () => {
+    console.log(`Modpack Server Running on: http://localhost:${serverPort}`)
   })
 }
 
-async function modpackLoader (directories) {
+async function modpackLoader (directories, serverPort) {
   const modpacks = (await Promise.all(directories.map(searchDirectory))).reduce((acc, results) => {
     acc.push(...results)
     return acc
   }, [])
 
-  createServer()
+  createServer(serverPort)
 
   return modpacks
 }

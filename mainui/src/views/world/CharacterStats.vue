@@ -10,9 +10,7 @@
       <div v-for="cc in characters" :key="cc.id">
         <h3>{{ cc.name }}</h3>
         <tabulation :items=[cc] />
-        <div class="cards">
-          <character-card v-for="(cardId, idx) in characterCardList(cc)" :key="`c_${cardId}_${idx}`" :cardId="cardId" :baseColor="cc.color" :baseIcon="cc.icon" />
-        </div>
+        <card-row :cards="characterCardList(cc)" :baseColor="cc.color" :baseIcon="cc.icon" />
       </div>
     </div>
   </multi-page-section-view>
@@ -44,11 +42,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.cards {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>

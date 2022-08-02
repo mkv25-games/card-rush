@@ -4,13 +4,16 @@ import newSaveFile from '@/models/saveFile.js'
 import newUserPreferences from '@/models/userPreferences.js'
 import combineModpacks from '@/models/combineModpacks.js'
 
+const modpackServerPort = 25015
+
 function defaultProgramModel () {
   return {
     userPreferences: newUserPreferences(),
     saveFile: newSaveFile(),
     saveFileList: [],
     modpacks: [],
-    gamedata: {}
+    gamedata: {},
+    knownImagePaths: {}
   }
 }
 
@@ -49,6 +52,9 @@ function setup () {
       },
       toggleModpackStatus (state, modpackStatus) {
         state.userPreferences.modpackStatus[modpackStatus.package] = modpackStatus.enabled
+      },
+      knownImagePaths (state, knownImagePaths) {
+        state.knownImagePaths = knownImagePaths
       },
       gamedata (state, gamedata) {
         state.gamedata = gamedata
@@ -100,10 +106,15 @@ function setup () {
       },
       async loadModpacks ({ state, commit }) {
         const rpcProxy = await rpc.fetch()
-        const modpacks = await rpcProxy.findModpacks()
+        const modpacks = await rpcProxy.findModpacks(modpackServerPort)
         commit('modpacks', modpacks)
         const modpackStatus = state.userPreferences.modpackStatus
         const allModpackData = combineModpacks(modpacks, modpackStatus)
+        const knownImagePaths = allModpackData.images.reduce((acc, item) => {
+          acc[item] = true
+          return acc
+        }, {})
+        commit('knownImagePaths', knownImagePaths)
         commit('gamedata', allModpackData)
       },
       async combineModpacks ({ state, commit }) {
@@ -131,6 +142,13 @@ function setup () {
     },
     modules: {}
   })
+
+  main.findImageURL = (imagePath) => {
+    const { knownImagePaths } = main.state
+    const imageKnown = knownImagePaths[imagePath]
+    console.log('Known Image Paths', { knownImagePaths, imagePath })
+    return imageKnown ? `http://localhost:${modpackServerPort}/${imagePath}` : ''
+  }
 
   main.getGamedataIndex = (type, property = 'id') => {
     const { gamedata } = main.state
