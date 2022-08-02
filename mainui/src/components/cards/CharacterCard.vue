@@ -74,6 +74,13 @@ export default {
   width: 59mm;
   height: 92mm;
   font-size: 0.8em;
+  transition: transform ease-out 0.2s;
+  transform: scale(0.90);
+}
+
+.card:hover {
+  transform: scale(1.0);
+  z-index: 500;
 }
 
 .border {
