@@ -2,8 +2,8 @@ const { find, read, position } = require('promise-path')
 const mkvconf = require('mkvconf')
 const express = require('express')
 
-let modpacksForServer = []
-let imagePathsForServer = {}
+const modpacksForServer = []
+const imagePathsForServer = {}
 
 async function searchDirectory (directory) {
   const location = position(directory)
@@ -73,7 +73,7 @@ async function loadModpack (filepath) {
 }
 
 let modpackServer
-function createServer(serverPort) {
+function createServer (serverPort) {
   if (modpackServer) {
     return
   }
@@ -88,7 +88,7 @@ function createServer(serverPort) {
     })
   })
 
-  modpackServer.get('*', function(req, res) {
+  modpackServer.get('*', function (req, res) {
     const imageRecord = imagePathsForServer[req.originalUrl]
     if (imageRecord) {
       res.sendFile(imageRecord)
@@ -99,7 +99,7 @@ function createServer(serverPort) {
         status: 404
       }).status(404)
     }
-  });
+  })
 
   modpackServer.listen(serverPort, () => {
     console.log(`Modpack Server Running on: http://localhost:${serverPort}`)
