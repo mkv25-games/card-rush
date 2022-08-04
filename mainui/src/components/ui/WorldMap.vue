@@ -107,7 +107,14 @@ export default {
       center = center || spiralCenter
       const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
       const displayLocationsRef = displayLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
-      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize)).sort((a, b) => {
+        const az = Math.round(a.y * 1000)
+        const bz = Math.round(b.y * 1000)
+        if (az === bz) {
+          return 0
+        }
+        return az > bz ? 1 : -1
+      })
 
       const { top, left, right, bottom } = calculateBoundingBox(displayLocationsRef)
       const minx = left

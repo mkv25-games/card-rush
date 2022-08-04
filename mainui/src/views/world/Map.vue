@@ -4,7 +4,7 @@
       <world-map
         :world="world"
         :center="selectedLocation"
-        :show-icons="true"
+        :show-icons="false"
         :show-labels="true"
         :show-fog-of-war="true"
         v-on:highlight-location="handleHighlightedLocation"

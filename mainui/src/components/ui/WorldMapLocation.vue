@@ -1,7 +1,7 @@
 <template>
   <g :class="className">
-    <g :transform="`translate(${location.x} ${location.y})`">
-      <polygon :points="polyHexPoints" :fill="color" stroke="#967969" stroke-width="3" />
+    <g :transform="`translate(${location.x} ${location.y * 0.32})`">
+      <polygon v-if="showIcon" :points="polyHexPoints" :fill="color" stroke="#967969" stroke-width="3" />
       <text
         fill="black" stroke="none"
         font-family="Avenir, Helvetica, Arial, sans-serif"
@@ -12,6 +12,7 @@
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
         <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
           <div>
+            <div class="tileImage" :style="tileImageStyle"></div>
             <icon v-if="showIcon" :icon="findIcon(location)" />
             <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
           </div>
@@ -94,6 +95,29 @@ export default {
     },
     outOfBounds () {
       return this.location.data.id === 'out-of-bounds'
+    },
+    tileImage () {
+      const { $store, location } = this
+      return $store.findImageURL(location.image || 'tile-assets-darkened.png')
+    },
+    tileImageStyle () {
+      const { tileImage, location } = this
+      const tileSize = -128
+      if (location.data.tile) {
+        const { row, column } = location.data.tile || { row: 0, column: 0 }
+        const xpos = tileSize * column
+        const ypos = tileSize * row
+        return {
+          backgroundImage: `url(${tileImage})`,
+          backgroundPosition: [xpos, ypos].map(n => `${n}px`).join(' ')
+        }
+      } else {
+        return {}
+      }
+    },
+    zIndex () {
+      const { location } = this
+      return Math.round(location.y * 1000)
     }
   }
 }
@@ -150,5 +174,14 @@ foreignObject {
 .hidden > g > polygon {
   fill-opacity: 0.0;
   stroke-opacity: 0.0;
+}
+.tileImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  background-size: 1024px 1024px;
 }
 </style>

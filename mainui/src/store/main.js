@@ -146,7 +146,6 @@ function setup () {
   main.findImageURL = (imagePath) => {
     const { knownImagePaths } = main.state
     const imageKnown = knownImagePaths[imagePath]
-    console.log('Known Image Paths', { knownImagePaths, imagePath })
     return imageKnown ? `http://localhost:${modpackServerPort}/${imagePath}` : ''
   }
 
