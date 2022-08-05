@@ -6,7 +6,7 @@
         <image :href="tileImage" :x="0" :y="0" :width="width" :height="height" />
       </pattern>
       <polygon v-if="tileImage"
-        :points="polyHexPoints" class="polyhex" :fill="`url(#${location.id}_bgi)`" />
+        :points="polyHexPoints" class="polyhex" :fill="`url(#${location.id}_bgi)`" :stroke="color" />
       <polygon v-else
         :points="polyHexPoints" class="polyhex" :fill="color" />
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
@@ -168,7 +168,6 @@ foreignObject {
   stroke-opacity: 0.0;
 }
 .polyhex {
-  stroke: #967969;
   stroke-width: 3px;
 }
 </style>
