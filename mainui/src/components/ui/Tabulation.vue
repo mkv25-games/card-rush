@@ -261,6 +261,6 @@ td {
   margin: 0 0.5em 0 0;
 }
 table span > img {
-  max-width: 256px;
+  max-width: 378px;
 }
 </style>

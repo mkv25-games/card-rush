@@ -1,18 +1,17 @@
 <template>
   <g :class="className">
-    <g :transform="`translate(${location.x} ${location.y * 0.32})`">
-      <polygon v-if="showIcon" :points="polyHexPoints" :fill="color" stroke="#967969" stroke-width="3" />
-      <text
-        fill="black" stroke="none"
-        font-family="Avenir, Helvetica, Arial, sans-serif"
-        :y="5"
-        font-size="15"
-        text-anchor="middle">
-      </text>
+    <g :transform="`translate(${location.x} ${location.y})`">
+      <pattern v-if="tileImage" :id="`${location.id}_bgi`" patternUnits="userSpaceOnUse"
+        :x="hw" :y="hh" :width="width" :height="height">
+        <image :href="tileImage" :x="0" :y="0" :width="width" :height="height" />
+      </pattern>
+      <polygon v-if="tileImage"
+        :points="polyHexPoints" class="polyhex" :fill="`url(#${location.id}_bgi)`" />
+      <polygon v-else
+        :points="polyHexPoints" class="polyhex" :fill="color" />
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
         <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
-          <div>
-            <div class="tileImage" :style="tileImageStyle"></div>
+          <div v-if="!tileImage">
             <icon v-if="showIcon" :icon="findIcon(location)" />
             <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
           </div>
@@ -98,21 +97,13 @@ export default {
     },
     tileImage () {
       const { $store, location } = this
-      return $store.findImageURL(location.image || 'tile-assets-darkened.png')
+      return $store.findImageURL(location.data.image)
     },
-    tileImageStyle () {
-      const { tileImage, location } = this
-      const tileSize = -128
-      if (location.data.tile) {
-        const { row, column } = location.data.tile || { row: 0, column: 0 }
-        const xpos = tileSize * column
-        const ypos = tileSize * row
-        return {
-          backgroundImage: `url(${tileImage})`,
-          backgroundPosition: [xpos, ypos].map(n => `${n}px`).join(' ')
-        }
-      } else {
-        return {}
+    polyHexStyle () {
+      const { tileImage } = this
+      return {
+        backgroundImage: `url(${tileImage})`,
+        backgroundPosition: 'center center'
       }
     },
     zIndex () {
@@ -136,6 +127,7 @@ foreignObject {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: white;
 }
 .locationbox.html > div.icon {
   font-size: 1.5em;
@@ -175,13 +167,8 @@ foreignObject {
   fill-opacity: 0.0;
   stroke-opacity: 0.0;
 }
-.tileImage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 128px;
-  height: 128px;
-  overflow: hidden;
-  background-size: 1024px 1024px;
+.polyhex {
+  stroke: #967969;
+  stroke-width: 3px;
 }
 </style>
