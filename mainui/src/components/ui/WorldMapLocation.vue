@@ -5,13 +5,13 @@
         :x="hw" :y="hh" :width="width" :height="height">
         <image :href="tileImage" :x="0" :y="0" :width="width" :height="height" />
       </pattern>
-      <polygon v-if="tileImage"
+      <polygon v-if="tileImage && showImage"
         :points="polyHexPoints" class="polyhex" :fill="`url(#${location.id}_bgi)`" :stroke="color" />
       <polygon v-else
         :points="polyHexPoints" class="polyhex" :fill="color" />
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
         <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
-          <div v-if="!tileImage">
+          <div v-if="!showImage">
             <icon v-if="showIcon" :icon="findIcon(location)" />
             <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
           </div>
@@ -34,6 +34,10 @@ export default {
       default () {
         return { label: 'No label' }
       }
+    },
+    showImage: {
+      type: Boolean,
+      default: false
     },
     showIcon: {
       type: Boolean,

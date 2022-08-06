@@ -19,6 +19,15 @@ import { createScreenLayout, calculateBoundingBox } from '@/utils/hexLayout.js'
 const tileSize = 120
 const screenLayout = createScreenLayout(tileSize)
 
+export function sortLocationsByZIndex (a, b) {
+  const az = Math.round(a.y * 1000)
+  const bz = Math.round(b.y * 1000)
+  if (az === bz) {
+    return 0
+  }
+  return az > bz ? 1 : -1
+}
+
 function mapLocationToScreen (location, screenLayout, tileSize) {
   const { hex } = location
   const { x, y } = screenLayout.hexToPixel(hex)
@@ -107,14 +116,7 @@ export default {
       center = center || spiralCenter
       const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
       const displayLocationsRef = displayLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
-      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize)).sort((a, b) => {
-        const az = Math.round(a.y * 1000)
-        const bz = Math.round(b.y * 1000)
-        if (az === bz) {
-          return 0
-        }
-        return az > bz ? 1 : -1
-      })
+      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
 
       const { top, left, right, bottom } = calculateBoundingBox(displayLocationsRef)
       const minx = left
