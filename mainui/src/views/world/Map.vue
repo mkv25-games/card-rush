@@ -25,8 +25,9 @@
         <div class="actions show-dialog-button">
           <form-button v-on:click="showMapInfo = true" icon="map-marked-alt" label="Show Map Info" />
         </div>
-        <div class="location-info" v-if="selectedLocation">
-          <form-button :icon="selectedLocation.data.icon" :label="selectedLocation.data.name" />
+        <div class="location-info">
+          <form-button v-if="selectedLocation" :icon="selectedLocation.data.icon" :label="selectedLocation.data.name" />
+          <form-button v-if="highlightedLocation" :icon="highlightedLocation.data.icon" :label="highlightedLocation.data.name" />
         </div>
       </div>
     </div>
@@ -85,5 +86,8 @@ export default {
   position: absolute;
   top: 1em;
   left: 1em;
+}
+.location-info > * {
+  width: 100px;
 }
 </style>
