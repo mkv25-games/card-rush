@@ -4,6 +4,7 @@
       <world-map-location v-for="location in layout.locations" :key="[location.id, location.data.id].join(':')"
         :show-icon="showIcons"
         :show-label="showLabels"
+        :show-image="showImages"
         :class="location.className || 'location'"
         v-on:mousedown="selectLocation(location)"
         v-on:mouseover="highlightLocation(location)"
@@ -72,6 +73,10 @@ export default {
       type: Boolean,
       default: true
     },
+    showImages: {
+      type: Boolean,
+      default: true
+    },
     showFogOfWar: {
       type: Boolean,
       default: false
@@ -105,24 +110,26 @@ export default {
       const { world, center, locationTypes, showFogOfWar } = this
       const defaultWorldLocations = createWorldLocations({ world, locationTypes })
       const centerHex = center ? center.hex : null
-      const defaultVisibleLocations = { displayLocations: defaultWorldLocations, borderLocations: defaultWorldLocations }
-      const { displayLocations, borderLocations } = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultVisibleLocations
-      const layout = this.createDisplayLayout({ displayLocations, borderLocations, center })
+      const defaultVisibleLocations = { allLocations: defaultWorldLocations, visibleLocations: defaultWorldLocations, borderLocations: defaultWorldLocations }
+      const { allLocations, visibleLocations, borderLocations } = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultVisibleLocations
+      const layout = this.createDisplayLayout({ allLocations, visibleLocations, borderLocations, center })
       this.layout = layout
       graduallyShowLocationsInOrder({ locations: this.layout.locations })
     },
-    createDisplayLayout ({ displayLocations, borderLocations, center }) {
-      const spiralCenter = displayLocations[0]
+    createDisplayLayout ({ allLocations, visibleLocations, borderLocations, center }) {
+      const spiralCenter = visibleLocations[0]
       center = center || spiralCenter
       const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
-      const displayLocationsRef = displayLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
-      const borderLocationsRef = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const allLocationsScreen = allLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const visibleLocationsScreen = visibleLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const borderLocationsScreen = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
 
-      const { top, left, right, bottom } = calculateBoundingBox(displayLocationsRef)
+      const { top, left, right, bottom } = calculateBoundingBox(visibleLocationsScreen)
       const minx = left
       const miny = top
       return {
-        locations: borderLocationsRef,
+        locations: allLocationsScreen,
+        borderLocations: borderLocationsScreen,
         minx,
         miny,
         width: Math.abs(right - left) + (tileSize),

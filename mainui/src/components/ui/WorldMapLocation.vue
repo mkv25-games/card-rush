@@ -5,13 +5,15 @@
         :x="hw" :y="hh" :width="width" :height="height">
         <image :href="tileImage" :x="0" :y="0" :width="width" :height="height" />
       </pattern>
-      <polygon v-if="tileImage && showImage"
+      <polygon v-if="showImageCondition"
         :points="polyHexPoints" class="polyhex" :fill="`url(#${location.id}_bgi)`" :stroke="color" />
       <polygon v-else
-        :points="polyHexPoints" class="polyhex" :fill="color" />
+        :points="polyHexPoints" class="polyhex" :fill="color" :stroke="color" />
+      <polygon v-if="fogged"
+        :points="polyHexPoints" class="polyhex fogged" />
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
         <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
-          <div v-if="!showImage">
+          <div>
             <icon v-if="showIcon" :icon="findIcon(location)" />
             <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
           </div>
@@ -37,7 +39,7 @@ export default {
     },
     showImage: {
       type: Boolean,
-      default: false
+      default: true
     },
     showIcon: {
       type: Boolean,
@@ -56,10 +58,11 @@ export default {
   },
   computed: {
     className () {
-      const { outOfBounds } = this
+      const { fogged, outOfBounds } = this
       const { animationState } = this.location
       const oobClass = outOfBounds ? 'out-of-bounds' : 'in-bounds'
-      return ['wml', animationState || 'hidden', oobClass].join(' ')
+      const foggedClass = fogged ? 'fogged' : 'unfogged'
+      return ['wml', animationState || 'hidden', oobClass, foggedClass].join(' ')
     },
     width () {
       return this.location.width || 100
@@ -77,7 +80,9 @@ export default {
       return this.height / 2
     },
     labelLines () {
-      if (!this.showLabel) {
+      const { showLabel, tileImage } = this
+      const needALabel = showLabel || !tileImage
+      if (!needALabel) {
         return []
       }
       const label = this.location.label || 'No label'
@@ -90,6 +95,13 @@ export default {
     },
     color () {
       return this.location.color || 'grey'
+    },
+    fogged () {
+      return this.location.fogged || false
+    },
+    showImageCondition () {
+      const { fogged, tileImage, showImage } = this
+      return showImage && !fogged && tileImage
     },
     polyHexPoints () {
       const hexLayout = createScreenLayout(this.width * 0.95)
@@ -145,6 +157,12 @@ foreignObject {
 .wml.out-of-bounds {
   opacity: 0.4;
 }
+.wml.fogged > g > polygon {
+  stroke: none;
+}
+.wml.fogged:hover > g > polygon {
+  stroke: none;
+}
 .visible {
   transform: translateY(0);
   transition: transform 250ms ease-in, color 500ms ease-in;
@@ -153,7 +171,7 @@ foreignObject {
 .visible > g > polygon {
   fill-opacity: 1.0;
   stroke-opacity: 1.0;
-  transition: fill-opacity 1500ms, stroke-opacity 1500ms ease-out;
+  transition: fill-opacity 700ms, stroke-opacity 700ms ease-out;
 }
 .showing {
   transform: translateY(0);
@@ -162,7 +180,7 @@ foreignObject {
 .showing > g > polygon {
   fill-opacity: 0.0;
   stroke-opacity: 0.0;
-  transition: fill-opacity 1500ms, stroke-opacity 1500ms ease-out;
+  transition: fill-opacity 700ms, stroke-opacity 700ms ease-out;
 }
 .hidden {
   visibility: hidden;
@@ -173,5 +191,9 @@ foreignObject {
 }
 .polyhex {
   stroke-width: 3px;
+}
+.polyhex.fogged {
+  fill-opacity: 0.8;
+  stroke-opacity: 0.0;
 }
 </style>

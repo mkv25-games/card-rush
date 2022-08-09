@@ -6,13 +6,13 @@ export function createWorldLocations ({ world, locationTypes }) {
   const radius = world ? world.size : 4 || 4
   const worldSeed = generateSeedFrom(world.name || 'unknown')
   const center = new Hex(0, 0, 0)
-  const validTypes = locationTypes.filter(lt => lt.id !== 'out-of-bounds')
+  const validTypes = locationTypes.filter(lt => lt.type !== 'hidden')
   const locations = world.locations || calculateHexagonSpiral(center, radius).map((hex, index) => createSeededLocation({ worldSeed, locationTypes: validTypes, hex, index }))
   return locations
 }
 
 export function createOutOfBoundsLocation ({ locationTypes, hex }) {
-  const type = locationTypes.filter(n => n.id === 'out-of-bounds')[0] || { id: 'out-of-bounds', name: 'Unknown?', icon: 'question', color: 'brown' }
+  const type = locationTypes.filter(n => n.type === 'hidden')[0] || { id: 'out-of-bounds', type: 'hidden', name: 'Unknown?', icon: 'question', color: 'brown' }
   return createNewLocation({ type, hex })
 }
 
@@ -24,6 +24,16 @@ export function createNewLocation ({ type, hex }) {
     color: type.color,
     data: type
   }
+  return location
+}
+
+function unfogVisibleLocation (location) {
+  location.fogged = false
+  return location
+}
+
+function fogBorderLocation (location) {
+  location.fogged = true
   return location
 }
 
@@ -50,10 +60,18 @@ export function computeFogOfWar ({ locations, locationTypes, centerHex }) {
   const fogSpiral = calculateHexagonSpiral(centerHex, fogRadius)
 
   const locationsMap = mapLocationsToSet(locations)
-  const displayLocations = visibleSpiral.map(hex => locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex }))
+  const visibleLocations = visibleSpiral.map(hex => {
+    const visibleLocation = locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex })
+    return unfogVisibleLocation(visibleLocation)
+  })
+  const visibleLocationsMap = mapLocationsToSet(visibleLocations)
 
-  const displayLocationsMap = mapLocationsToSet(displayLocations)
-  const borderLocations = fogSpiral.map(hex => displayLocationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex }))
+  const borderLocations = fogSpiral.filter(hex => !visibleLocationsMap[hex.id()]).map(hex => {
+    const borderLocation = locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex })
+    return fogBorderLocation(borderLocation)
+  })
 
-  return { displayLocations, borderLocations }
+  const allLocations = [...visibleLocations, ...borderLocations]
+
+  return { allLocations, borderLocations, visibleLocations }
 }

@@ -1,7 +1,11 @@
 <template>
   <div class="start-new-game">
     <pan-and-zoom class="darkmode" :show-labels="false" :min-zoom="1" :max-zoom="1">
-      <world-map :world="previewWorld" :show-icons="previewWorld.size < 10" class="preview-world"></world-map>
+      <world-map :world="previewWorld"
+        :show-icons="previewWorld.size < 10"
+        :show-labels="false"
+        :show-images="true"
+        class="preview-world" />
     </pan-and-zoom>
     <lightbox v-if="showDialog">
       <h2>Create new world</h2>

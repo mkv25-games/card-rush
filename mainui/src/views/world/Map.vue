@@ -5,7 +5,8 @@
         :world="world"
         :center="selectedLocation"
         :show-icons="false"
-        :show-labels="true"
+        :show-labels="false"
+        :show-images="true"
         :show-fog-of-war="true"
         v-on:highlight-location="handleHighlightedLocation"
         v-on:select-location="handleSelectedLocation"
@@ -18,6 +19,7 @@
           :world="world"
           :show-icons="false"
           :show-labels="false"
+          :show-images="false"
           :show-fog-of-war="false"></world-map>
         <form-button v-on:click="showMapInfo = false" icon="window-close" label="Hide Map Info" />
       </lightbox>
@@ -56,9 +58,11 @@ export default {
       this.highlightedLocation = location
     },
     handleSelectedLocation (location) {
-      if (location.data.id !== 'out-of-bounds') {
-        this.selectedLocation = location
+      if (location.data.type === 'hidden') {
+        return
       }
+      console.log('Select location:', location)
+      this.selectedLocation = location
     }
   }
 }
