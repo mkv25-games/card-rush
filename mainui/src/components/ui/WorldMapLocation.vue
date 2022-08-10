@@ -14,7 +14,7 @@
       <foreignObject class="node" :x="-hw" :y="-hh" :width="width" :height="height">
         <body xmlns="http://www.w3.org/1999/xhtml" class="locationbox html">
           <div>
-            <icon v-if="showIcon" :icon="findIcon(location)" />
+            <icon v-if="showIconCondition" :icon="findIcon(location)" />
             <div v-for="(line, index) in labelLines" :key="`la_${index}`">{{ line }}</div>
           </div>
         </body>
@@ -80,8 +80,8 @@ export default {
       return this.height / 2
     },
     labelLines () {
-      const { showLabel, tileImage } = this
-      const needALabel = showLabel || !tileImage
+      const { showLabel, tileImage, fogged, outOfBounds } = this
+      const needALabel = !(fogged || outOfBounds) && (showLabel || !tileImage)
       if (!needALabel) {
         return []
       }
@@ -98,6 +98,10 @@ export default {
     },
     fogged () {
       return this.location.fogged || false
+    },
+    showIconCondition () {
+      const { showIcon, fogged, outOfBounds } = this
+      return showIcon || fogged || outOfBounds
     },
     showImageCondition () {
       const { fogged, tileImage, showImage } = this
@@ -193,7 +197,7 @@ foreignObject {
   stroke-width: 3px;
 }
 .polyhex.fogged {
-  fill-opacity: 0.8;
+  fill-opacity: 0.4;
   stroke-opacity: 0.0;
 }
 </style>

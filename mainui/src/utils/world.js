@@ -54,7 +54,7 @@ export function mapLocationsToSet (list) {
 export function computeFogOfWar ({ locations, locationTypes, centerHex }) {
   centerHex = centerHex || new Hex(0, 0, 0)
 
-  const visibleRadius = 4
+  const visibleRadius = 3
   const visibleSpiral = calculateHexagonSpiral(centerHex, visibleRadius)
   const fogRadius = visibleRadius + 2
   const fogSpiral = calculateHexagonSpiral(centerHex, fogRadius)
