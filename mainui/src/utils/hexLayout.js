@@ -50,6 +50,5 @@ export function calculateBoundingBox (locations) {
     right: Math.max(...locations.map(loc => loc.x)),
     bottom: Math.max(...locations.map(loc => loc.y))
   }
-  console.log('Bounding Box:', boundary)
   return boundary
 }

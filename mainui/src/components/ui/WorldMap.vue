@@ -50,10 +50,17 @@ function graduallyShowLocationsInOrder ({ locations, totalAnimationTimeInMs = 20
   })
 }
 
+function showAllLocations ({ locations }) {
+  locations.forEach((location) => {
+    location.animationState = 'visible'
+  })
+}
+
 export default {
   data () {
     return {
-      layout: null
+      layout: null,
+      firstTimeShown: true
     }
   },
   props: {
@@ -107,14 +114,19 @@ export default {
   },
   methods: {
     updateLayout () {
-      const { world, center, locationTypes, showFogOfWar } = this
+      const { world, center, firstTimeShown, locationTypes, showFogOfWar } = this
       const defaultWorldLocations = createWorldLocations({ world, locationTypes })
       const centerHex = center ? center.hex : null
       const defaultVisibleLocations = { allLocations: defaultWorldLocations, visibleLocations: defaultWorldLocations, borderLocations: defaultWorldLocations }
       const { allLocations, visibleLocations, borderLocations } = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultVisibleLocations
       const layout = this.createDisplayLayout({ allLocations, visibleLocations, borderLocations, center })
       this.layout = layout
-      graduallyShowLocationsInOrder({ locations: this.layout.locations })
+      if (firstTimeShown) {
+        this.firstTimeShown = false
+        graduallyShowLocationsInOrder({ locations: this.layout.locations })
+      } else {
+        showAllLocations({ locations: this.layout.locations })
+      }
     },
     createDisplayLayout ({ allLocations, visibleLocations, borderLocations, center }) {
       const spiralCenter = visibleLocations[0]
