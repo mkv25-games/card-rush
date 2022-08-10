@@ -127,6 +127,9 @@ export default {
       const { top, left, right, bottom } = calculateBoundingBox(visibleLocationsScreen)
       const minx = left
       const miny = top
+
+      this.$emit('startingLocation', spiralCenter)
+
       return {
         locations: allLocationsScreen,
         borderLocations: borderLocationsScreen,
