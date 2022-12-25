@@ -51,13 +51,17 @@ export function mapLocationsToSet (list) {
   }, {})
 }
 
-export function computeFogOfWar ({ locations, locationTypes, centerHex }) {
+export function computeFogOfWar ({ locations, locationTypes, centerHex, cameraDistance, viewDistance, borderDistance }) {
   centerHex = centerHex || new Hex(0, 0, 0)
 
-  const visibleRadius = 3
+  const visibleRadius = viewDistance
   const visibleSpiral = calculateHexagonSpiral(centerHex, visibleRadius)
-  const fogRadius = visibleRadius + 2
+
+  const fogRadius = visibleRadius + borderDistance
   const fogSpiral = calculateHexagonSpiral(centerHex, fogRadius)
+
+  const cameraRadius = cameraDistance
+  const cameraSpiral = calculateHexagonSpiral(centerHex, cameraRadius)
 
   const locationsMap = mapLocationsToSet(locations)
   const visibleLocations = visibleSpiral.map(hex => {
@@ -71,7 +75,11 @@ export function computeFogOfWar ({ locations, locationTypes, centerHex }) {
     return fogBorderLocation(borderLocation)
   })
 
-  const allLocations = [...visibleLocations, ...borderLocations]
+  const cameraLocations = cameraSpiral.map(hex => {
+    return locationsMap[hex.id()] || createOutOfBoundsLocation({ locationTypes, hex })
+  })
 
-  return { allLocations, borderLocations, visibleLocations }
+  const allLocations = [...visibleLocations, ...borderLocations, ...cameraLocations]
+
+  return { allLocations, borderLocations, visibleLocations, cameraLocations }
 }

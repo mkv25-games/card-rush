@@ -60,7 +60,7 @@ export default {
   data () {
     return {
       layout: null,
-      firstTimeShown: true
+      shownForFirstTime: false
     }
   },
   props: {
@@ -71,6 +71,10 @@ export default {
     center: {
       type: Object,
       default: null
+    },
+    showFirstTime: {
+      type: Boolean,
+      default: true
     },
     showIcons: {
       type: Boolean,
@@ -87,6 +91,18 @@ export default {
     showFogOfWar: {
       type: Boolean,
       default: false
+    },
+    viewDistance: {
+      type: Number,
+      default: 3
+    },
+    borderDistance: {
+      type: Number,
+      default: 2
+    },
+    cameraDistance: {
+      type: Number,
+      default: 5
     }
   },
   computed: {
@@ -114,29 +130,38 @@ export default {
   },
   methods: {
     updateLayout () {
-      const { world, center, firstTimeShown, locationTypes, showFogOfWar } = this
+      const { world, center, showFirstTime, shownForFirstTime, locationTypes, showFogOfWar, cameraDistance, viewDistance, borderDistance } = this
       const defaultWorldLocations = createWorldLocations({ world, locationTypes })
       const centerHex = center ? center.hex : null
-      const defaultVisibleLocations = { allLocations: defaultWorldLocations, visibleLocations: defaultWorldLocations, borderLocations: defaultWorldLocations }
-      const { allLocations, visibleLocations, borderLocations } = showFogOfWar ? computeFogOfWar({ locations: defaultWorldLocations, locationTypes, centerHex }) : defaultVisibleLocations
-      const layout = this.createDisplayLayout({ allLocations, visibleLocations, borderLocations, center })
+      const { allLocations, visibleLocations, borderLocations, cameraLocations } = computeFogOfWar({
+        locations: defaultWorldLocations,
+        locationTypes,
+        centerHex,
+        cameraDistance: showFogOfWar ? cameraDistance : world.size,
+        viewDistance: showFogOfWar ? viewDistance : world.size,
+        borderDistance
+      })
+      const layout = this.createDisplayLayout({ allLocations, visibleLocations, borderLocations, cameraLocations, center })
       this.layout = layout
-      if (firstTimeShown) {
-        this.firstTimeShown = false
+      if (showFirstTime && !shownForFirstTime) {
+        this.shownForFirstTime = true
+        this.$emit('showingForFirstTime')
         graduallyShowLocationsInOrder({ locations: this.layout.locations })
+        this.$emit('shownForFirstTime')
       } else {
         showAllLocations({ locations: this.layout.locations })
       }
     },
-    createDisplayLayout ({ allLocations, visibleLocations, borderLocations, center }) {
+    createDisplayLayout ({ allLocations, visibleLocations, borderLocations, cameraLocations, center }) {
       const spiralCenter = visibleLocations[0]
       center = center || spiralCenter
       const displayCenter = mapLocationToScreen(center, screenLayout, tileSize)
       const allLocationsScreen = allLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
       const visibleLocationsScreen = visibleLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
       const borderLocationsScreen = borderLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
+      const cameraLocationsScreen = cameraLocations.map(location => mapLocationToScreen(location, screenLayout, tileSize))
 
-      const { top, left, right, bottom } = calculateBoundingBox(visibleLocationsScreen)
+      const { top, left, right, bottom } = calculateBoundingBox(cameraLocationsScreen)
       const minx = left
       const miny = top
 
@@ -145,6 +170,8 @@ export default {
       return {
         locations: allLocationsScreen,
         borderLocations: borderLocationsScreen,
+        visibleLocations: visibleLocationsScreen,
+        cameraLocations: cameraLocationsScreen,
         minx,
         miny,
         width: Math.abs(right - left) + (tileSize),

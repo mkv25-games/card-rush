@@ -13,7 +13,7 @@
 </template>
 
 <script>
-const ELK = require('elkjs')
+import ELK from 'elkjs'
 const elk = new ELK()
 
 const graph = {

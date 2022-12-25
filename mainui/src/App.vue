@@ -6,11 +6,10 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
 import PrimaryNav from '@/components/PrimaryNav.vue'
 import rpc from '@/api/rpc'
 
-export default defineComponent({
+export default {
   components: {
     PrimaryNav
   },
@@ -21,7 +20,7 @@ export default defineComponent({
     this.$store.dispatch('refreshSaveFileList')
     this.$store.dispatch('loadModpacks')
   }
-})
+}
 </script>
 
 <style>

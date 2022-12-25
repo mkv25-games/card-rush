@@ -5,7 +5,18 @@
     <title>Card Rush - Main UI Loading...</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.png">
+    <link rel="icon" href="/favicon.png">
+    <script>window.global = window;</script>
+    <script type="module">
+        import process from "process";
+        import { Buffer } from "buffer";
+        import EventEmitter from "events";
+        
+        window.Buffer = Buffer;
+        window.process = process;
+        window.EventEmitter = EventEmitter;
+    </script>
+    <script type="module" src="/src/mainui.js"></script>
   </head>
   <body style="background: #eee;">
     <noscript>

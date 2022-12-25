@@ -5,7 +5,7 @@ run() {
     node data-scripts/find-all-routes.js
     cd mainui
     npm install
-    npm run serve &
+    npm run dev &
     cd ..
     APP_MODE=local-dev npm run forge-start
 }

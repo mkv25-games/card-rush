@@ -21,7 +21,8 @@
           :show-icons="false"
           :show-labels="false"
           :show-images="false"
-          :show-fog-of-war="false"></world-map>
+          :show-fog-of-war="false"
+          :show-first-time="false"></world-map>
         <form-button v-on:click="showMapInfo = false" icon="window-close" label="Hide Map Info" />
       </lightbox>
       <div v-else>
