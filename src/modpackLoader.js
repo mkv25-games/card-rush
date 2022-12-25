@@ -49,7 +49,8 @@ async function loadModpack (filepath) {
     const loadingWork = confFiles.map(filename => loadModpackFile({ packpath, filename, packdata }))
 
     const relativeImagePaths = imageFiles.map(fullPath => {
-      const relativePath = fullPath.replace(packpath('./'), '')
+      const packpathDir = packpath('./').split('\\').join('/')
+      const relativePath = fullPath.replace(packpathDir, '')
       imagePathsForServer[`/${relativePath}`] = fullPath
       return {
         fullPath,
