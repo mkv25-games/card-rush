@@ -14,7 +14,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.2",
-    "elkjs": "^0.7.1",
+    "elkjs": "^0.8.2",
     "remote-model": "^2.0.0",
     "stream-browserify": "^3.0.0",
     "vue": "^3.0.0",
