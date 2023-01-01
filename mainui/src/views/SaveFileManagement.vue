@@ -51,7 +51,8 @@ export default {
     return {
       errors: [],
       deleteConfirmation: '',
-      loading: true
+      loading: true,
+      deleteError: ''
     }
   },
   computed: {
@@ -72,14 +73,15 @@ export default {
       }
     },
     async deleteSaveFile (key) {
+      const { findSaveFiles, $store } = this
       try {
-        await this.electron.clearData(key)
+        await $store.dispatch('clearData', key)
         this.deleteConfirmation = ''
         this.deleteError = ''
       } catch (ex) {
         this.deleteError = `Unable to delete file: ${ex.message}`
       }
-      return this.findSaveFiles()
+      return findSaveFiles()
     },
     async findSaveFiles () {
       this.loading = true

@@ -102,6 +102,9 @@ function setup () {
         const data = clone(saveFile)
         return rpcClient.sendData(state.saveFile.name, data)
       },
+      async clearData ({}, key) {
+        return rpcClient.clearData(key)
+      },
       async refreshSaveFileList ({ commit }) {
         const files = await rpcClient.findFiles('**/*')
         const saveFileList = files
