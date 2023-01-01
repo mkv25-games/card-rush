@@ -95,8 +95,12 @@ export default {
       return result
     },
     listAllProperties() {
-      const index = this.items.reduce((acc, item) => {
-        acc = Object.assign(acc, Object.keys(item))
+      const index = this.items.reduce((acc, item) => {        
+        if (typeof item === 'object') {
+          acc = Object.assign(acc, Object.keys(item))
+        } else {
+          acc = Object.assign(acc, { type: typeof item })
+        }
         return acc
       }, {})
       return Object.values(index)
@@ -131,9 +135,9 @@ export default {
       const asc = internalSortAscending
       const clonedRows = removeArrayListeners(rows)
       if (col) {
-        clonedRows.sort((a, b) => {
-          const sa = JSON.stringify(a[0][col])
-          const sb = JSON.stringify(b[0][col])
+        clonedRows.sort((a, b) => {          
+          const sa = JSON.stringify(a[0][col] || a[0]) || ''
+          const sb = JSON.stringify(b[0][col] || b[0]) || ''
           return asc ? sa.localeCompare(sb) : sb.localeCompare(sa)
         })
       }
@@ -153,9 +157,10 @@ export default {
       const direction = this.computedSortAscending ? 'sort-amount-up' : 'sort-amount-down'
       return this.computedSortedColumn === columnHeading ? direction : 'sort'
     },
-    contentsOf(cell, column) {
-      const columnKey = this.columnKeys[column] ?? column
-      return cell[columnKey] ?? ''
+    contentsOf(cell, column, showCellIfEmpty = true) {
+      const columnKey = this.columnKeys[column] || column
+      const columnContents = cell[columnKey]
+      return columnContents === undefined && showCellIfEmpty ? cell : columnContents
     },
     columnKey(column) {
       return this.columnKeys[column] ?? column
@@ -217,8 +222,5 @@ td {
 }
 .cell.property > b {
   margin: 0 0.5em 0 0;
-}
-table span > img {
-  max-width: 378px;
 }
 </style>

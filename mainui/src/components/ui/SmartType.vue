@@ -17,6 +17,9 @@
       <span>{{ value }}</span>
       <icon icon="square" :style="`color: ${value}`" />
     </div>
+    <span v-else-if="smartType === 'image'" style="font-family: monospace; white-space: nowrap;">
+      <img :src="findImage(value)" />
+    </span>
     <div v-else-if="smartType === 'url'" style="font-family: monospace; white-space: nowrap;">
       <icon icon="earth-americas" />
       <a :href="value">/{{ value.split('/').pop() }}</a>
@@ -86,13 +89,17 @@ export default {
       return ['smart', 'property', smartType, withName].filter(n => n).join(' ')
     },
     smartType() {
-      const { name, value } = this
+      const { name, value, findImage } = this
       const keyString = (name + '').toLowerCase()
       const valueString = (value + '').toLowerCase()
 
       const knownKeyType = keyTypes[keyString]
       if (knownKeyType) {
         return knownKeyType
+      }
+      const image = findImage(valueString)
+      if (image) {
+        return 'image'
       }
       if (valueString.includes('https://')) {
         return 'url'
@@ -123,6 +130,10 @@ export default {
     parseDate(value) {
       const date = new Date(value)
       return (date.toString() === 'Invalid Date') ? new Date() : date
+    },
+    findImage(value) {
+      const { $store } = this
+      return $store.findImageURL(value)
     }
   }
 }
@@ -152,6 +163,10 @@ export default {
   border-radius: 0.5em;
   padding: 0 0.5em;
   background: #ccc;
+}
+
+.smart.property.image > span > img {
+  max-width: 378px;
 }
 
 </style>

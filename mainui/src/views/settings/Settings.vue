@@ -6,7 +6,7 @@
         <h1>Interface Settings</h1>
         <tabulation :items="[{
           'Build Information': $store.state.version,
-          'Stored count': $store.state.userPreferences.count
+          'Stored count': $store.state?.userPreferences?.count
         }]" />
         <h2>Interactions</h2>
         <column>

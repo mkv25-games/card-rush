@@ -61,7 +61,9 @@ function setup () {
         state.modpacks = modpacks
       },
       toggleModpackStatus (state, modpackStatus) {
-        state.userPreferences.modpackStatus[modpackStatus.package] = modpackStatus.enabled
+        if (state?.userPreferences?.modpackStatus) {
+          state.userPreferences.modpackStatus[modpackStatus.package] = modpackStatus.enabled
+        }
       },
       knownImagePaths (state, knownImagePaths) {
         state.knownImagePaths = knownImagePaths
@@ -111,7 +113,7 @@ function setup () {
         await modpackClient.refresh()
         const modpacks = modpackClient.modpacks
         commit('modpacks', modpacks)
-        const modpackStatus = state.userPreferences.modpackStatus
+        const modpackStatus = state?.userPreferences?.modpackStatus ?? {}
         const allModpackData = combineModpacks(modpacks, modpackStatus)
         const knownImagePaths = allModpackData.images.reduce((acc, item) => {
           acc[item] = true
@@ -123,7 +125,7 @@ function setup () {
       },
       async combineModpacks ({ state, commit }) {
         const modpacks = state.modpacks
-        const modpackStatus = state.userPreferences.modpackStatus
+        const modpackStatus = state?.userPreferences?.modpackStatus
         const allModpackData = combineModpacks(modpacks, modpackStatus)
         commit('gamedata', allModpackData)
       },
