@@ -7,14 +7,12 @@
 
 <script>
 import PrimaryNav from '@/components/PrimaryNav.vue'
-import rpc from '@/api/rpc'
 
 export default {
   components: {
     PrimaryNav
   },
   mounted () {
-    rpc.notify(window)
     this.$store.dispatch('getVersion')
     this.$store.dispatch('loadUserPreferences')
     this.$store.dispatch('refreshSaveFileList')

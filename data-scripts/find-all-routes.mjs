@@ -1,4 +1,9 @@
-const { find, position, write } = require('promise-path')
+import { find, position, write } from 'promise-path'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const kebabize = str => {
   return str.split('').map((letter, idx) => {
@@ -49,7 +54,7 @@ async function run () {
   console.log(vueViewFiles.join('\n'))
   console.log('Found', vueViewFiles.length, 'vue view files')
 
-  const lines = ['/* Generated file: node data-scripts/find-all-routes.js */']
+  const lines = ['/* Generated file: node data-scripts/find-all-routes.mjs */']
   lines.push('')
   lines.push(...importStatements)
   lines.push('')

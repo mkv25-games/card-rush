@@ -1,4 +1,4 @@
-/* Generated file: node data-scripts/find-all-components.js */
+/* Generated file: node data-scripts/find-all-components.mjs */
 
 import CardRow from './components/cards/CardRow.vue'
 import CharacterCard from './components/cards/CharacterCard.vue'

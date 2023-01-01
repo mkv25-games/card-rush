@@ -1,10 +1,18 @@
 import { createStore } from 'vuex'
-import rpcModel from '@/api/rpc'
 import newSaveFile from '@/models/saveFile.js'
 import newUserPreferences from '@/models/userPreferences.js'
 import combineModpacks from '@/models/combineModpacks.js'
 
+import RpcClient from '../models/rpcClient.js'
+import ModpackClient from '../models/modpackClient'
+
+const rpcServerPort = 25010
+const rpcClient = new RpcClient({ baseUrl: `http://localhost:${rpcServerPort}` })
+rpcClient.init()
+
 const modpackServerPort = 25015
+const modpackClient = new ModpackClient({ baseUrl: `http://localhost:${modpackServerPort}/` })
+modpackClient.init()
 
 function defaultProgramModel () {
   return {
@@ -18,11 +26,13 @@ function defaultProgramModel () {
 }
 
 function clone (data) {
+  if (!data) {
+    return data
+  }
   return JSON.parse(JSON.stringify(data))
 }
 
 function setup () {
-  const rpc = rpcModel.instance
   const main = createStore({
     state: defaultProgramModel(),
     mutations: {
@@ -66,47 +76,40 @@ function setup () {
         dispatch('saveUserPreferences')
       },
       async saveUserPreferences ({ state }) {
-        const rpcProxy = await rpc.fetch()
-        return rpcProxy.sendData('userPreferences', clone(state.userPreferences))
+        return rpcClient.sendData('userPreferences', clone(state.userPreferences))
       },
       async loadUserPreferences ({ commit }) {
-        const rpcProxy = await rpc.fetch()
-        const preferences = await rpcProxy.requestData('userPreferences') || {}
+        const preferences = await rpcClient.requestData('userPreferences') || {}
         commit('setUserPreferences', preferences.data)
       },
       async resetUserPreferences ({ commit, state }) {
         commit('setUserPreferences', newUserPreferences())
-        const rpcProxy = await rpc.fetch()
-        await rpcProxy.sendData('userPreferences', clone(state.userPreferences))
+        await rpcClient.sendData('userPreferences', clone(state.userPreferences))
       },
       async getVersion ({ commit }) {
-        const rpcProxy = await rpc.fetch()
-        const version = await rpcProxy.version()
+        const version = rpcClient.version
         commit('setVersion', version)
       },
       async loadGameRecord ({ commit }, payload) {
-        const rpcProxy = await rpc.fetch()
-        const saveFile = await rpcProxy.requestData(payload.name)
+        const saveFile = await rpcClient.requestData(payload.name)
         console.log('store/main.js SaveFile:', saveFile, 'Payload:', payload)
         commit('assignSaveFile', saveFile.data)
       },
       async saveGameRecord ({ commit, state }, saveFile) {
         commit('assignSaveFile', saveFile)
-        const rpcProxy = await rpc.fetch()
         const data = clone(saveFile)
-        return rpcProxy.sendData(state.saveFile.name, data)
+        return rpcClient.sendData(state.saveFile.name, data)
       },
       async refreshSaveFileList ({ commit }) {
-        const rpcProxy = await rpc.fetch()
-        const files = await rpcProxy.findFiles('**/*')
+        const files = await rpcClient.findFiles('**/*')
         const saveFileList = files
           .filter(file => file.filepath.includes('/savedata/') || file.filepath.includes('\\savedata\\'))
           .filter(file => !file.filepath.includes('userPreferences.json'))
         commit('saveFileList', saveFileList)
       },
       async loadModpacks ({ state, commit }) {
-        const rpcProxy = await rpc.fetch()
-        const modpacks = await rpcProxy.findModpacks(modpackServerPort)
+        await modpackClient.refresh()
+        const modpacks = modpackClient.modpacks
         commit('modpacks', modpacks)
         const modpackStatus = state.userPreferences.modpackStatus
         const allModpackData = combineModpacks(modpacks, modpackStatus)
@@ -114,6 +117,7 @@ function setup () {
           acc[item] = true
           return acc
         }, {})
+        console.log('Known Image Paths:', { knownImagePaths })
         commit('knownImagePaths', knownImagePaths)
         commit('gamedata', allModpackData)
       },
@@ -129,15 +133,13 @@ function setup () {
       },
       async hideDeveloperTools ({ commit, state }) {
         commit('hideDeveloperTools')
-        const rpcProxy = await rpc.fetch()
         const { developerTools } = state.userPreferences
-        return rpcProxy.updateDeveloperTools(developerTools.visible)
+        return rpcClient.updateDeveloperTools(developerTools.visible)
       },
       async showDeveloperTools ({ commit, state }) {
         commit('showDeveloperTools')
-        const rpcProxy = await rpc.fetch()
         const { developerTools } = state.userPreferences
-        return rpcProxy.updateDeveloperTools(developerTools.visible)
+        return rpcClient.updateDeveloperTools(developerTools.visible)
       }
     },
     modules: {}

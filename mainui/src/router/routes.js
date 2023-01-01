@@ -1,4 +1,4 @@
-/* Generated file: node data-scripts/find-all-routes.js */
+/* Generated file: node data-scripts/find-all-routes.mjs */
 
 import Home from '../views/Home.vue'
 import MainMenu from '../views/MainMenu.vue'

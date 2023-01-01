@@ -1,6 +1,8 @@
-const { find, read, position } = require('promise-path')
-const mkvconf = require('mkvconf')
-const express = require('express')
+import { find, read, position } from 'promise-path'
+import mkvconf from 'mkvconf'
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
 
 const modpacksForServer = []
 const imagePathsForServer = {}
@@ -64,7 +66,11 @@ async function loadModpack (filepath) {
     packError = ex.message
   }
 
-  modpacksForServer.push(packdata)
+  modpacksForServer.push({
+    filepath,
+    packdata,
+    messages: [packError, ...fileErrors].filter(n => n)
+  })
 
   return {
     filepath,
@@ -80,6 +86,9 @@ function createServer (serverPort) {
   }
 
   modpackServer = express()
+  modpackServer.use(cors())
+  modpackServer.use(bodyParser.json())
+  
   modpackServer.get('/', (req, res) => {
     res.json({
       serverInfo: 'This is the modpack server for Card Rush; game assets are loaded from here to be made available for the game.',
@@ -118,4 +127,4 @@ async function modpackLoader (directories, serverPort) {
   return modpacks
 }
 
-module.exports = modpackLoader
+export default modpackLoader

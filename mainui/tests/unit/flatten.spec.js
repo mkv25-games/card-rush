@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const flatten = require('../../src/utils/flattenObject.js')
+import { expect } from 'chai'
+import flatten from '../../src/utils/flattenObject.js'
 
 describe('Flatten Object', () => {
   it('flattens multi-depth objects into single level objects', () => {
