@@ -88,7 +88,7 @@ function createServer (serverPort) {
   modpackServer = express()
   modpackServer.use(cors())
   modpackServer.use(bodyParser.json())
-  
+
   modpackServer.get('/', (req, res) => {
     res.json({
       serverInfo: 'This is the modpack server for Card Rush; game assets are loaded from here to be made available for the game.',

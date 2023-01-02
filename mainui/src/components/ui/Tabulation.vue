@@ -23,7 +23,7 @@
             :column="column"
             :column-key="columnKey(column)"
           >
-            <smart-type :key="columnKey(column)" :value="contentsOf(cell, column)" />
+            <smart-type :name="columnKey(column)" :value="contentsOf(cell, column)" />
           </slot>
         </td>
       </tr>

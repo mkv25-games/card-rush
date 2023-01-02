@@ -2,8 +2,11 @@
   <settings class="icon-list">
     <div class="grid-icons">
       <h1>Available Icons</h1>
-      <input v-model="iconFilter" placeholder="Type to filter icons..." class="icon-filter" />
-      <Tabulation :items="iconTiles" />
+      <PaginatedItems :items="iconTiles">
+        <template v-slot="{ paginatedItems }">
+          <Tabulation :items="paginatedItems" />
+        </template>
+      </PaginatedItems>
     </div>
   </settings>
 </template>
@@ -13,20 +16,14 @@ import icons from '@/models/icons'
 import Tabulation from '../../../components/ui/Tabulation.vue'
 
 export default {
-  data () {
-    return {
-      iconFilter: ''
-    }
-  },
   computed: {
     iconTiles () {
-      const { iconFilter } = this
       return icons().map((icon) => {
         return {
           id: icon,
           icon: icon
         }
-      }).filter(item => item.icon.includes(iconFilter) || iconFilter.includes(item.icon))
+      }).filter(item => item.icon)
     }
   },
   components: { Tabulation }

@@ -17,7 +17,7 @@ function createServer ({ app, mainApp, version, serverPort, appPath, userPath })
   rpcServer = express()
   rpcServer.use(cors())
   rpcServer.use(bodyParser.json())
-  
+
   rpcServer.get('/', (req, res) => {
     res.json({
       serverInfo: 'This is the RPC server for Card Rush; data between the game (webui) and operating system are passed through here.',

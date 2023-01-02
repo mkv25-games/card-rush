@@ -20,7 +20,7 @@ const iconUrl = url.format({
   slashes: true
 })
 
-function getUserPath() {
+function getUserPath () {
   return app.getPath('userData')
 }
 
@@ -52,7 +52,7 @@ function createWindow () {
   const mode = selectApplicationMode(process)
   console.log('App Mode:', mode.name)
   mode.fn(mainWindow)
-  
+
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.setTitle(title)
     if (process.env.FORCE_OPEN_DEV_TOOLS) {
