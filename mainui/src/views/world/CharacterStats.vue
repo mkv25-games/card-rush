@@ -1,6 +1,7 @@
 <template>
   <multi-page-section-view class="multi-page-section character-stats scroll">
     <h1><icon icon="chart-area" /> Character Stats</h1>
+    <FlipCard />
     <div v-if="character.name">
       <h2>Current character statistics</h2>
       <tabulation :items="[character]" />

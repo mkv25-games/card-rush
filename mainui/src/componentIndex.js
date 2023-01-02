@@ -2,6 +2,7 @@
 
 import CardRow from './components/cards/CardRow.vue'
 import CharacterCard from './components/cards/CharacterCard.vue'
+import FlipCard from './components/cards/FlipCard.vue'
 import PrimaryNav from './components/PrimaryNav.vue'
 import SidebarNav from './components/SidebarNav.vue'
 import StoryTeller from './components/toys/StoryTeller.vue'
@@ -16,6 +17,7 @@ import FormInput from './components/ui/FormInput.vue'
 import FormRow from './components/ui/FormRow.vue'
 import GridFill from './components/ui/GridFill.vue'
 import GrowButton from './components/ui/GrowButton.vue'
+import HiddenByDefault from './components/ui/HiddenByDefault.vue'
 import HorizontalTileGrid from './components/ui/HorizontalTileGrid.vue'
 import Icon from './components/ui/Icon.vue'
 import IconButton from './components/ui/IconButton.vue'
@@ -24,6 +26,8 @@ import PaginatedItems from './components/ui/PaginatedItems.vue'
 import PanAndZoom from './components/ui/PanAndZoom.vue'
 import Property from './components/ui/Property.vue'
 import PropertyPanel from './components/ui/PropertyPanel.vue'
+import RelativeDate from './components/ui/RelativeDate.vue'
+import SmartType from './components/ui/SmartType.vue'
 import Tabulation from './components/ui/Tabulation.vue'
 import TechBox from './components/ui/TechBox.vue'
 import TechDiagram from './components/ui/TechDiagram.vue'
@@ -52,5 +56,5 @@ import SkillsTree from './views/world/SkillsTree.vue'
 import MultiPageSectionNav from './views/world/ui/MultiPageSectionNav.vue'
 
 export default {
-  CardRow, CharacterCard, PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, Column, ColumnLayout, FixedButton, FormActions, FormButton, FormInput, FormRow, GridFill, GrowButton, HorizontalTileGrid, Icon, IconButton, Lightbox, PaginatedItems, PanAndZoom, Property, PropertyPanel, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, MainMenu, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
+  CardRow, CharacterCard, FlipCard, PrimaryNav, SidebarNav, StoryTeller, Checkmark, Collapsed, Column, ColumnLayout, FixedButton, FormActions, FormButton, FormInput, FormRow, GridFill, GrowButton, HiddenByDefault, HorizontalTileGrid, Icon, IconButton, Lightbox, PaginatedItems, PanAndZoom, Property, PropertyPanel, RelativeDate, SmartType, Tabulation, TechBox, TechDiagram, TechEdge, Toggle, VerticalTileGrid, WorldMap, WorldMapLocation, Home, MainMenu, SaveFileManagement, ComponentTests, Debug, Icons, Gamedata, Mods, Settings, SettingsNav, StartNewGame, Template, CharacterStats, EventHistory, Map, MultiPageSectionView, SkillsTree, MultiPageSectionNav
 }
