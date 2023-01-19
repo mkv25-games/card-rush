@@ -3,6 +3,14 @@
     <settings-nav />
     <div class="frame">
       <slot>
+        <h1>Application Info</h1>
+        <tabulation :items="[{
+          'App Path': $store.state?.appInfo?.appPath
+        }]" />
+        <tabulation :items="[{
+          'User Path': $store.state?.appInfo?.userPath
+        }]" />
+
         <h1>Interface Settings</h1>
         <tabulation :items="[{
           'Build Information': $store.state.version,
@@ -23,6 +31,14 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  async mounted() {
+    await this.$store.dispatch('refreshAppInfo')
+  }
+}
+</script>
 
 <style scoped>
 .settings-view {

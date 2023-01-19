@@ -1,13 +1,29 @@
 import { generateSeedFrom } from './seeds.js'
 import { calculateHexagonSpiral } from './hexLayout.js'
+import perlin from './perlin.js'
 import { Hex } from './hex.js'
 
 export function createWorldLocations ({ world, locationTypes }) {
-  const radius = world ? world.size : 4 || 4
-  const worldSeed = generateSeedFrom(world.name || 'unknown')
-  const center = new Hex(0, 0, 0)
+  world.worldSeed = generateSeedFrom(world.name || 'unknown')
+  const locations = world.locations ?? createNewWorldLocations({ world, locationTypes })
+  world.locations = locations
+  return locations
+}
+
+function createNewWorldLocations({ world, locationTypes }) {
+  const { worldSeed } = world
+  perlin.seed(worldSeed)
+
   const validTypes = locationTypes.filter(lt => lt.type !== 'hidden')
-  const locations = world.locations || calculateHexagonSpiral(center, radius).map((hex, index) => createSeededLocation({ worldSeed, locationTypes: validTypes, hex, index }))
+  const naturalLocations = validTypes.filter(loc => loc.type == 'natural').sort((a, b) => {
+    const ae = a?.elevation ?? 0
+    const be = b?.elevation ?? 0
+    return ae > be ? -1 : 0
+  })
+  const center = new Hex(0, 0, 0)
+  const radius = world ? world.size : 4 || 4
+  const hexagons = calculateHexagonSpiral(center, radius)
+  const locations = hexagons.map((hex, index) => createSeededLocation({ world, worldSeed, locationTypes: naturalLocations, hex, index }))
   return locations
 }
 
@@ -37,16 +53,25 @@ function fogBorderLocation (location) {
   return location
 }
 
-export function createSeededLocation ({ worldSeed, locationTypes, hex, index }) {
-  const typeSeed = worldSeed + index
+export function createSeededLocation ({ world, worldSeed, locationTypes, hex, index }) {
+  const { size } = world
+  const a = hex.q / size
+  const b = hex.r / size
+  const typeSeed = Math.floor((1 + perlin.perlin2(a, b) % 1) * locationTypes.length)
   const type = locationTypes[typeSeed % locationTypes.length] || { id: 'unknown', name: 'Unknown', icon: 'mountain', color: '#999' }
   return createNewLocation({ type, hex })
 }
 
 export function mapLocationsToSet (list) {
-  return list.reduce((acc, loc) => {
-    const { hex } = loc
-    acc[hex.id()] = loc
+  return list.reduce((acc, location) => {
+    let hex = location?.hex ?? location
+    if (typeof hex?.id !== 'function') {
+      hex = new Hex(hex.q, hex.r, hex.s)
+      if (location.hex) {
+        location.hex = hex
+      }
+    }
+    acc[hex.id()] = hex
     return acc
   }, {})
 }

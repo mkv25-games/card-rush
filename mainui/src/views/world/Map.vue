@@ -31,9 +31,9 @@
         </div>
         <div class="location-info">
           <form-button v-if="selectedLocation || startingLocation"
-            :icon="(selectedLocation || startingLocation).data.icon"
-            :label="(selectedLocation || startingLocation).data.name" />
-          <form-button v-if="highlightedLocation" :icon="highlightedLocation.data.icon" :label="highlightedLocation.data.name" />
+            :icon="(selectedLocation || startingLocation)?.data?.icon"
+            :label="(selectedLocation || startingLocation)?.data?.name" />
+          <form-button v-if="highlightedLocation" :icon="highlightedLocation?.data?.icon" :label="highlightedLocation?.data?.name" />
         </div>
       </div>
     </div>

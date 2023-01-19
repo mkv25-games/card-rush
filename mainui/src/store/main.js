@@ -16,6 +16,7 @@ modpackClient.init()
 
 function defaultProgramModel () {
   return {
+    appInfo: {},
     userPreferences: newUserPreferences(),
     saveFile: newSaveFile(),
     saveFileList: [],
@@ -36,6 +37,9 @@ function setup () {
   const main = createStore({
     state: defaultProgramModel(),
     mutations: {
+      appInfo (state, data) {
+        state.appInfo = data
+      },
       hideDeveloperTools (state) {
         state.userPreferences.developerTools.visible = false
       },
@@ -84,6 +88,10 @@ function setup () {
         const preferences = await rpcClient.requestData('userPreferences') || {}
         commit('setUserPreferences', preferences.data)
       },
+      async refreshAppInfo({ commit, state }) {
+        const appInfo = await rpcClient.refresh()
+        commit('appInfo', appInfo)
+      },
       async resetUserPreferences ({ commit, state }) {
         commit('setUserPreferences', newUserPreferences())
         await rpcClient.sendData('userPreferences', clone(state.userPreferences))
@@ -112,6 +120,19 @@ function setup () {
           .filter(file => !file.filepath.includes('userPreferences.json'))
         commit('saveFileList', saveFileList)
       },
+      async reloadModpacks ({ state, commit }) {
+        await modpackClient.reload()
+        const modpacks = modpackClient.modpacks
+        commit('modpacks', modpacks)
+        const modpackStatus = state?.userPreferences?.modpackStatus ?? {}
+        const allModpackData = combineModpacks(modpacks, modpackStatus)
+        const knownImagePaths = allModpackData.images.reduce((acc, item) => {
+          acc[item] = true
+          return acc
+        }, {})
+        commit('knownImagePaths', knownImagePaths)
+        commit('gamedata', allModpackData)
+      },
       async loadModpacks ({ state, commit }) {
         await modpackClient.refresh()
         const modpacks = modpackClient.modpacks
@@ -122,7 +143,6 @@ function setup () {
           acc[item] = true
           return acc
         }, {})
-        console.log('Known Image Paths:', { knownImagePaths })
         commit('knownImagePaths', knownImagePaths)
         commit('gamedata', allModpackData)
       },

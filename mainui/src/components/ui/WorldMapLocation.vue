@@ -113,11 +113,11 @@ export default {
       return points.map(p => [p.x, p.y].join(' ')).join(',')
     },
     outOfBounds () {
-      return this.location.data.id === 'out-of-bounds'
+      return this.location?.data?.id === 'out-of-bounds'
     },
     tileImage () {
       const { $store, location } = this
-      return $store.findImageURL(location.data.image)
+      return $store.findImageURL(location?.data?.image)
     },
     polyHexStyle () {
       const { tileImage } = this

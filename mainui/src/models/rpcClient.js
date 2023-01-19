@@ -16,6 +16,7 @@ export default class RpcClient {
     const { client } = this
     const response = await client.get('')
     this._index = response.data
+    return this._index
   }
 
   get index() {

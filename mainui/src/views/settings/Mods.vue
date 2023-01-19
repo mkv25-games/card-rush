@@ -1,5 +1,8 @@
 <template>
   <settings class="mods scroll">
+    <div>
+      <FormButton @click="$store.dispatch('reloadModpacks')">Reload Modpacks</FormButton>
+    </div>
     <div class="mods">
       <div class="modpack" v-for="modpack in modpacks" :key="modpack">
         <Collapsed :title="modpack.packdata.package || 'No package info'">

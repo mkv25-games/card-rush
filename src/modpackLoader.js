@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 
 const modpacksForServer = []
 const imagePathsForServer = {}
+let searchDirectories
 
 async function searchDirectory (directory) {
   const location = position(directory)
@@ -98,6 +99,26 @@ function createServer (serverPort) {
     })
   })
 
+  modpackServer.post('/reload', async (req, res) => {
+    while (modpacksForServer.length > 0) {
+      modpacksForServer.pop()
+    }
+    
+    (await Promise.all(searchDirectories.map(searchDirectory))).reduce((acc, results) => {
+      acc.push(...results)
+      return acc
+    }, [])
+
+    res.json({
+      message: `Rescanned modpacks at ${new Date()}`,
+      serverInfo: 'This is the modpack server for Card Rush; game assets are loaded from here to be made available for the game.',
+      date: new Date(),
+      modpacks: modpacksForServer,
+      imagePaths: Object.keys(imagePathsForServer),
+      searchDirectories
+    })
+  })
+
   modpackServer.get('*', function (req, res) {
     const imageRecord = imagePathsForServer[req.originalUrl]
     if (imageRecord) {
@@ -117,6 +138,7 @@ function createServer (serverPort) {
 }
 
 async function modpackLoader (directories, serverPort) {
+  searchDirectories = directories
   const modpacks = (await Promise.all(directories.map(searchDirectory))).reduce((acc, results) => {
     acc.push(...results)
     return acc

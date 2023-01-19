@@ -1,7 +1,7 @@
 <template>
   <svg v-if="layout" :viewBox="viewBox">
     <g :transform="viewCenter">
-      <world-map-location v-for="location in layout.locations" :key="[location.id, location.data.id].join(':')"
+      <world-map-location v-for="(location, index) in layout.locations" :key="[world?.worldSeed, location?.id, location?.data?.id, index].join(':')"
         :show-icon="showIcons"
         :show-label="showLabels"
         :show-image="showImages"
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { Hex } from '@/utils/hex.js'
 import { createWorldLocations, computeFogOfWar } from '@/utils/world.js'
 import { createScreenLayout, calculateBoundingBox } from '@/utils/hexLayout.js'
 
@@ -30,7 +31,14 @@ export function sortLocationsByZIndex (a, b) {
 }
 
 function mapLocationToScreen (location, screenLayout, tileSize) {
-  const { hex } = location
+  let hex = location?.hex ?? location
+  if (typeof hex?.id !== 'function') {
+    hex = new Hex(hex.q, hex.r, hex.s)
+    if (location.hex) {
+      location.hex = hex
+    }
+  }
+
   const { x, y } = screenLayout.hexToPixel(hex)
   const id = ['l', hex.s, hex.r, hex.q].join('_')
 
@@ -116,7 +124,6 @@ export default {
     viewCenter () {
       const { layout } = this
       const { displayCenter, spiralCenter } = layout
-      console.log({ displayCenter, spiralCenter })
       const x = -(displayCenter.x - spiralCenter.x) + (layout.tileSize / 2)
       const y = -(displayCenter.y - spiralCenter.y) + (layout.tileSize / 2)
       return `translate(${x} ${y})`

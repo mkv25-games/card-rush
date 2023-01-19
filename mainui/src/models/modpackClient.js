@@ -17,6 +17,11 @@ export default class ModpackClient {
     this._index = response.data
   }
 
+  async reload() {
+    const response = await this.client.post('/reload', {})
+    this._index = response.data
+  }
+
   get index() {
     return this._index
   }
